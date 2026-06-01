@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1c24">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="失眠藥廣播劇之六度圈與Game" />
+    <meta property="og:description" content="為各個廣播劇角色於大千世界找出他們的六度圈連結" />
+    <meta property="og:image" content="https://github.com/kikiwoo702/mcu-6degrees-game/blob/main/6degrees-game.png?raw=true" />
+    <meta property="og:url" content="https://mcu-6degrees-game.vercel.app/" />
+    <title>失眠藥廣播劇之六度圈與Game</title>
+    <style>
+        :root {
+            --primary-color: #5c6bc0;    /* 質感深沉的劇場藍 */
+            --secondary-color: #7986cb;
+            --success-color: #2ecc71;
+            --warning-color: #f59e0b;    /* 提示專用黃色 */
+            --bg-color: #1a1c24;         /* 夜晚失眠主題：極致深色背景 */
+            --card-bg: #252836;          /* 深色卡片 */
+            --text-color: #f5f7fa;       /* 明亮文字 */
+            --text-muted: #9aa0b4;       /* 淡化文字 */
+            --accent-start: #4a90e2;     /* 起點藍 */
+            --accent-end: #e24a4a;       /* 終點紅 */
+        }
+
+        /* 新增 html 設定，強制把網頁最底層的畫布染成跟背景一樣的深色 */
+        html {
+            background-color: #1a1c24;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            /* 修正：padding-top 加上環境變數，讓網頁內容自動避開手機上方的瀏海/動態島 */
+            padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom)) 12px; 
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100dvh; 
+            box-sizing: border-box;
+
+            background-image: 
+                linear-gradient(rgba(26, 28, 36, 0.8), rgba(26, 28, 36, 0.8)), 
+                url('https://lh3.googleusercontent.com/d/1nKBFODyRkKt99TdmRaYDT_urVfu3oG3u'); 
+            
+            background-size: cover;          
+            background-position: center;     
+            background-repeat: no-repeat;    
+            background-attachment: scroll;
+        }
+
+        /* 核心包裝：支援電腦大螢幕與手機自適應 */
+        .game-container {
+            max-width: 850px;
+            width: 100%; 
+            background: var(--card-bg);
+            padding: 20px; 
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 1.6rem; 
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        /* 頂部進度條 */
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: #1e202c;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-start), #a78bfa);
+            transition: width 0.3s ease;
+        }
+
+        /* 目標與對決區 */
+        .target-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e202c;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #2d3142;
+        }
+
+        .char-display {
+            flex: 1;
+            text-align: center;
+            padding: 4px;
+        }
+
+        .char-name {
+            font-size: 1.2rem; 
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            word-break: break-all;
+        }
+
+        .start-node .char-name { color: var(--accent-start); }
+        .end-node .char-name { color: var(--accent-end); }
+
+        .char-remark {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            min-height: 16px;
+            word-break: break-all;
+        }
+
+        .arrow-indicator {
+            font-size: 1.3rem;
+            color: #3f445e;
+            padding: 0 6px;
+            animation: pulse 2s infinite;
+        }
+
+        /* 歷程紀錄（關係鏈） */
+        .path-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px dashed #3f445e;
+            border-radius: 12px;
+            background: rgba(30, 32, 44, 0.4);
+        }
+
+        .path-title {
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        .path-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px; 
+        }
+
+        .path-node {
+            background: #2d3142;
+            border: 1px solid #3f445e;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .path-node:hover {
+            background: #3d435c;
+            border-color: #7986cb;
+        }
+
+        .path-arrow {
+            color: var(--text-muted);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* 選擇區（按鈕格網） */
+        .selection-section {
+            margin-bottom: 20px;
+        }
+
+        .selection-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .btn-option {
+            background: #2d3142;
+            border: 1px solid #3f445e;
+            color: var(--text-color);
+            padding: 12px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            word-break: break-all; 
+        }
+
+        .btn-option:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-color: transparent;
+        }
+
+        /* 控制與操作區 */
+        .control-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #2d3142;
+        }
+
+        .control-buttons-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .btn-hint {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+        }
+
+        /* 嵌入式提示文字樣式區 */
+        .hint-display-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #fef3c7;
+            line-height: 1.5;
+            display: none; 
+            word-break: break-all;
+        }
+
+        .btn-control {
+            background: #4b5563;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* 彈窗樣式優化 */
+        .success-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 11, 15, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .success-card {
+            background: var(--card-bg);
+            border: 1px solid #3f445e;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            max-height: 90vh; /* 限制最高高度防溢出 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .success-scroll-area {
+            overflow-y: auto; /* 內容過長時允許內部捲動（特別是顯示其他答案時） */
+            padding-right: 4px;
+            flex: 1;
+        }
+
+        /* 客製化捲動條 */
+        .success-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        .success-scroll-area::-webkit-scrollbar-thumb {
+            background: #3f445e;
+            border-radius: 4px;
+        }
+
+        .success-title {
+            color: var(--success-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 6px 0;
+            border: none;
+            font-weight: bold;
+            width: 100%; 
+            box-sizing: border-box;
+        }
+
+        .btn-restart { background: var(--success-color); color: white; }
+        .btn-share { background: #4a90e2; color: white; }
+        .btn-show-others { background: #a78bfa; color: white; } /* 其他答案按鈕專用紫色 */
+
+        .answer-block {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(92, 107, 192, 0.1);
+            border: 1px solid rgba(92, 107, 192, 0.3);
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 1.1rem;
+            padding: 50px;
+            color: var(--text-muted);
+        }
+
+        /* 行動裝置媒體查詢（RWD 核心） */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.4rem; }
+            .game-container { padding: 15px; }
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 8px;
+            }
+            .char-name { font-size: 1.1rem; }
+            .btn-option { padding: 10px 6px; font-size: 0.9rem; }
+            .btn-option .char-remark { font-size: 0.7rem; }
+            .btn-hint, .btn-control { padding: 8px 12px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 380px) {
+            .options-grid {
+                grid-template-columns: 1fr; 
+            }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container" id="gameContainer">
+    <div class="loading">🪐 載入大千世界檔案中...</div>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+        <div class="success-title">🎉 連結成功！</div>
+        <div class="success-scroll-area">
+            <p id="successDetails" style="line-height: 1.6; margin-bottom: 20px; color:#e2e8f0; font-size: 0.95rem;"></p>
+            
+            <div id="otherAnswersContainer" style="display: none;"></div>
+            
+            <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">🔍 顯示其他最佳答案</button>
+            <button class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
+            <button class="btn-action btn-restart" onclick="initGame()">再玩一次</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 配置您的 Google Sheets API 資訊
+    // ==========================================
+    const SPREADSHEET_ID = '1srN4k7xMuGOZFz1JgsuFRfFvRQeXcBCiAcAjPnk1_JI'; 
+    const API_KEY = 'AIzaSyASvYZevWiECOAXp8ab9S4Xd1V97Kpw714';
+    // ==========================================
+
+    let characterList = []; 
+    let remarksMap = {};    
+    let matrixData = {};    
+    
+    let gameState = {
+        startChar: '',
+        endChar: '',
+        currentPath: [], 
+        maxSteps: 6      
+    };
+
+    async function loadDataFromSheets() {
+        try {
+            const remarksUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Character remarks?key=${API_KEY}`;
+            const remarksRes = await fetch(remarksUrl);
+            const remarksJson = await remarksRes.json();
+            
+            if(remarksJson.values) {
+                remarksJson.values.forEach((row, index) => {
+                    if (index === 0) return; 
+                    if (row[0]) {
+                        remarksMap[row[0].trim()] = row[1] ? row[1].trim() : '';
+                    }
+                });
+            }
+
+            const matrixUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/matrix?key=${API_KEY}`;
+            const matrixRes = await fetch(matrixUrl);
+            const matrixJson = await matrixRes.json();
+
+            if (!matrixJson.values || matrixJson.values.length === 0) throw new Error("無法讀取矩陣資料");
+
+            const rows = matrixJson.values;
+            const headerRow = rows[0]; 
+            
+            characterList = headerRow.slice(1).map(name => name.trim());
+            characterList.forEach(char => { matrixData[char] = []; });
+
+            for (let colIndex = 1; colIndex < headerRow.length; colIndex++) {
+                const columnChar = headerRow[colIndex].trim();
+                for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+                    const rowCells = rows[rowIndex];
+                    const rowChar = rowCells[0] ? rowCells[0].trim() : null;
+                    const cellValue = rowCells[colIndex];
+
+                    if (rowChar && cellValue && cellValue.toLowerCase() === 'v') {
+                        if (matrixData[columnChar]) {
+                            matrixData[columnChar].push(rowChar);
+                        }
+                    }
+                }
+            }
+
+            characterList.forEach(char => {
+                if(remarksMap[char] === undefined) {
+                    remarksMap[char] = "";
+                }
+            });
+
+            initGame();
+
+        } catch (error) {
+            console.error(error);
+            document.getElementById('gameContainer').innerHTML = `<div class="loading" style="color:#ef4444;">資料連線失敗，請確認試算表已開啟公開檢視。<br><small>${error.message}</small></div>`;
+        }
+    }
+
+    function findAllShortestPaths(start, end) {
+        if (!matrixData[start] || !matrixData[end]) return [];
+        
+        let queue = [[start]];
+        let shortestPaths = [];
+        let minLength = Infinity;
+        let visitedLengths = {}; 
+        
+        visitedLengths[start] = 1;
+
+        while (queue.length > 0) {
+            let currentPath = queue.shift();
+            let lastNode = currentPath[currentPath.length - 1];
+
+            if ((currentPath.length - 1) > gameState.maxSteps) break;
+            if (currentPath.length > minLength) break;
+
+            if (lastNode === end) {
+                if (currentPath.length < minLength) {
+                    minLength = currentPath.length;
+                    shortestPaths = [currentPath];
+                } else if (currentPath.length === minLength) {
+                    shortestPaths.push(currentPath);
+                }
+                continue;
+            }
+
+            let neighbors = matrixData[lastNode] || [];
+            for (let neighbor of neighbors) {
+                if (!visitedLengths[neighbor] || currentPath.length + 1 <= visitedLengths[neighbor]) {
+                    visitedLengths[neighbor] = currentPath.length + 1;
+                    queue.push([...currentPath, neighbor]);
+                }
+            }
+        }
+        return shortestPaths;
+    }
+
+    function initGame() {
+        document.getElementById('successOverlay').style.display = 'none';
+        document.getElementById('otherAnswersContainer').style.display = 'none';
+        document.getElementById('otherAnswersContainer').innerHTML = '';
+        document.getElementById('btnShowOthers').style.display = 'none';
+
+        if (characterList.length < 2) {
+            alert("角色數量不足。");
+            return;
+        }
+
+        let rand1, rand2;
+        let validQuestionFound = false;
+        let attempts = 0;
+        let validPaths = [];
+
+        while (!validQuestionFound && attempts < 500) { // 提高嘗試次數以確保找到符合條件的組合
+            attempts++;
+            rand1 = Math.floor(Math.random() * characterList.length);
+            rand2 = Math.floor(Math.random() * characterList.length);
+            
+            while (rand1 === rand2) {
+                rand2 = Math.floor(Math.random() * characterList.length);
+            }
+
+            let tempStart = characterList[rand1];
+            let tempEnd = characterList[rand2];
+            
+            // 【核心修改】：檢查這兩個角色是否直接認識（直連）
+            const startNeighbors = matrixData[tempStart] || [];
+            if (startNeighbors.includes(tempEnd)) {
+                continue; // 如果直接認識，跳過這組，重新抽取
+            }
+            
+            validPaths = findAllShortestPaths(tempStart, tempEnd);
+            
+            // 確保有解，且最短路徑大於 1（保證不直連）並在限制步數內
+            if (validPaths.length > 0 && validPaths[0].length - 1 > 1 && (validPaths[0].length - 1) <= gameState.maxSteps) {
+                validQuestionFound = true;
+                gameState.startChar = tempStart;
+                gameState.endChar = tempEnd;
+            }
+        }
+
+        // 萬一嘗試了 500 次都找不到（極罕見情況），作為保底機制
+        if (!validQuestionFound) {
+            gameState.startChar = characterList[rand1];
+            gameState.endChar = characterList[rand2];
+        }
+
+        gameState.currentPath = [gameState.startChar]; 
+        renderEngine();
+    }
+
+    function triggerGameHint() {
+        const hintBox = document.getElementById('hintDisplayBox');
+        if (!hintBox) return;
+
+        const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
+        const remainingSteps = gameState.maxSteps - (gameState.currentPath.length - 1);
+
+        if (currentCharacter === gameState.endChar) {
+            hintBox.innerHTML = `🎉 您已經成功抵達終點！`;
+            hintBox.style.display = 'block';
+            return;
+        }
+
+        let paths = findAllShortestPaths(currentCharacter, gameState.endChar);
+        
+        if (paths.length === 0 || (paths[0].length - 1) > remainingSteps) {
+            hintBox.innerHTML = `⚠️ <strong>分析提示：</strong> 按照當前連法，在剩餘步數內無法抵達終點，建議點選上方關係鎖鏈後退重選。`;
+            hintBox.style.display = 'block';
+            return;
+        }
+
+        let randomPath = paths[Math.floor(Math.random() * paths.length)];
+        let nextCharHint = randomPath[1]; 
+        
+        let remark = remarksMap[nextCharHint] ? ` — <small style="color:var(--text-muted);">${remarksMap[nextCharHint]}</small>` : '';
+        hintBox.innerHTML = `💡 <strong>過關提示：</strong> 推薦的下一個連接角色為 【 <strong>${nextCharHint}</strong> 】${remark}`;
+        hintBox.style.display = 'block';
+    }
+
+    function renderEngine() {
+        const container = document.getElementById('gameContainer');
+        const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
+
+        const connectionsCount = gameState.currentPath.length - 1;
+        const progressPercent = (connectionsCount / gameState.maxSteps) * 100;
+
+        if (currentCharacter === gameState.endChar) {
+            showSuccess();
+            return;
+        }
+
+        let html = `
+            <h1>失眠藥廣播劇之六度圈與Game</h1>
+            <div class="subtitle">為各個廣播劇角色於大千世界找出他們的六度圈連結</div>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+            </div>
+            
+            <div class="target-section">
+                <div class="char-display start-node">
+                    <div style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">0度起點</div>
+                    <div class="char-name">${gameState.startChar}</div>
+                    <div class="char-remark">${remarksMap[gameState.startChar] || ''}</div>
+                </div>
+                <div class="arrow-indicator">➔</div>
+                <div class="char-display end-node">
+                    <div style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">6度終點</div>
+                    <div class="char-name">${gameState.endChar}</div>
+                    <div class="char-remark">${remarksMap[gameState.endChar] || ''}</div>
+                </div>
+            </div>
+
+            <div class="path-section">
+                <div class="path-title">目前關係鎖鏈 (點擊下方任意角色可重新選擇下個角色)：</div>
+                <div class="path-container">
+        `;
+
+        gameState.currentPath.forEach((char, index) => {
+            html += `
+                <div class="path-node" onclick="handleRollback(${index})">
+                    <div style="font-weight:bold; font-size:0.9rem;">${char}</div>
+                    ${remarksMap[char] ? `<div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">${remarksMap[char]}</div>` : ''}
+                </div>
+            `;
+            if (index < gameState.currentPath.length - 1) {
+                html += `<div class="path-arrow">➔</div>`;
+            }
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+
+        if (connectionsCount >= gameState.maxSteps) {
+            html += `
+                <div style="text-align:center; color:#fc8181; padding:20px; border:1px solid #742a2a; border-radius:12px; background:#2d1f24;">
+                    <h3 style="margin-top:0; font-size:1.1rem;">⚠️ 已達 5 個中間角色上限</h3>
+                    <p style="font-size:0.85rem; margin-bottom:15px;">未能成功抵達終點，請點選上方關係鎖鏈重新選擇角色。</p>
+                    <button class="btn-control" onclick="showAnswersView()">💡 查看正確答案</button>
+                    <button class="btn-control" style="background:var(--success-color); margin-left: 8px;" onclick="initGame()">🎲 直接開新一局</button>
+                </div>
+            `;
+        } else {
+            const acquaintances = matrixData[currentCharacter] || [];
+            
+            html += `
+                <div class="selection-section">
+                    <div class="selection-title">請選擇下一位連結角色（目前已使用 ${connectionsCount}/5個連接角色）：</div>
+                    <div class="options-grid">
+            `;
+
+            if (acquaintances.length === 0) {
+                html += `<div style="grid-column: 1/-1; color:var(--text-muted); text-align:center; padding:20px; background:#1e202c; border-radius:10px; font-size:0.85rem;">此角色沒有能向下延伸的關係線，請點選上方關係鎖鏈並重新選擇角色。</div>`;
+            } else {
+                acquaintances.forEach(name => {
+                    html += `
+                        <button class="btn-option" onclick="handleSelectCharacter('${name}')">
+                            <div style="font-weight:bold; font-size:0.9rem;">${name}</div>
+                            <div class="char-remark">${remarksMap[name] || ''}</div>
+                        </button>
+                    `;
+                });
+            }
+
+            html += `
+                    </div>
+                </div>
+                
+                <div class="control-footer">
+                    <div id="hintDisplayBox" class="hint-display-box"></div>
+                    <div class="control-buttons-row">
+                        <button class="btn-hint" onclick="triggerGameHint()">獲取過關提示</button>
+                        <button class="btn-hint" onclick="showAnswersView()">查看正確答案<</button>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    function showAnswersView() {
+        const container = document.getElementById('gameContainer');
+        const paths = findAllShortestPaths(gameState.startChar, gameState.endChar);
+
+        let html = `
+            <h1>揭曉正確答案</h1>
+            <div class="subtitle">從「${gameState.startChar}」到「${gameState.endChar}」最短的關係鎖鏈</div>
+        `;
+
+        if (paths.length === 0) {
+            html += `
+                <div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.9rem;">
+                    <p>在 5 個中間人限制內，這兩位角色之間沒有符合規則的通路</p>
+                </div>
+            `;
+        } else {
+            const steps = paths[0].length - 2;
+            html += `<p style="text-align:center; color:var(--success-color); font-weight:bold; margin-bottom:15px; font-size:0.9rem; padding:0 5px;">
+                        共找到 ${paths.length} 組最少僅需 ${steps} 個中間人的六度鎖鏈路線：
+                     </p>`;
+
+            paths.forEach((path, pathIndex) => {
+                html += `
+                    <div class="answer-block">
+                        <div style="font-size:0.75rem; color:var(--secondary-color); font-weight:bold; margin-bottom:8px;">解法 #${pathIndex + 1}</div>
+                        <div class="path-container">
+                `;
+                
+                path.forEach((char, index) => {
+                    html += `
+                        <div class="path-node" style="cursor:default; border-color:var(--primary-color); padding:6px 10px;">
+                            <div style="font-weight:bold; font-size:0.85rem;">${char}</div>
+                            ${remarksMap[char] ? `<div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">${remarksMap[char]}</div>` : ''}
+                        </div>
+                    `;
+                    if (index < path.length - 1) {
+                        html += `<div class="path-arrow" style="color:var(--primary-color);">➔</div>`;
+                    }
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        html += `
+            <div style="text-align:center; margin-top:20px;">
+                <button class="btn-action btn-restart" style="padding: 12px 30px; font-size:1rem; width:auto;" onclick="initGame()">開新一局</button>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    }
+
+    function handleSelectCharacter(name) {
+        gameState.currentPath.push(name);
+        renderEngine();
+    }
+
+    function handleRollback(index) {
+        if (index === gameState.currentPath.length - 1) return;
+        gameState.currentPath = gameState.currentPath.slice(0, index + 1);
+        renderEngine();
+    }
+
+    // 智能處理「恭喜彈窗」與「其他最佳解答」按鈕顯示
+    function showSuccess() {
+        const steps = gameState.currentPath.length - 2; 
+        document.getElementById('successDetails').innerHTML = `恭喜你成功用 <strong>${steps}</strong> 個角色，在失眠藥宇宙中將 「<strong>${gameState.startChar}</strong>」 與 「<strong>${gameState.endChar}</strong>」 連結在一起`;
+        
+        // 重置彈窗內的隱藏區塊
+        document.getElementById('otherAnswersContainer').style.display = 'none';
+        document.getElementById('otherAnswersContainer').innerHTML = '';
+        
+        // 尋找全域最短解法
+        const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
+        
+        // 判定是否有多於一個答案
+        if (allPaths.length > 1) {
+            document.getElementById('btnShowOthers').style.display = 'block';
+        } else {
+            document.getElementById('btnShowOthers').style.display = 'none';
+        }
+
+        document.getElementById('successOverlay').style.display = 'flex';
+    }
+
+    // 在同一個 Pop-up Box 裡無縫呈現其他正確答案
+    function displayAlternativeAnswers() {
+        const container = document.getElementById('otherAnswersContainer');
+        const btn = document.getElementById('btnShowOthers');
+        const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
+        const steps = allPaths[0].length - 2;
+
+        let html = `
+            <div style="border-top: 1px solid #3f445e; margin-top: 15px; padding-top: 10px;">
+                <p style="color: var(--secondary-color); font-weight: bold; font-size: 0.9rem; text-align: left; margin-bottom: 5px;">
+                    💡 本題其餘最佳解法（共 ${allPaths.length} 種組合）：
+                </p>
+        `;
+
+        allPaths.forEach((path, pathIndex) => {
+            html += `
+                <div class="answer-block">
+                    <div style="font-size:0.75rem; color:var(--warning-color); font-weight:bold; margin-bottom:6px;">解法 #${pathIndex + 1}</div>
+                    <div class="path-container">
+            `;
+            
+            path.forEach((char, index) => {
+                html += `
+                    <div class="path-node" style="cursor:default; border-color:var(--secondary-color); padding: 4px 8px; font-size: 0.8rem;">
+                        <div style="font-weight:bold;">${char}</div>
+                    </div>
+                `;
+                if (index < path.length - 1) {
+                    html += `<div class="path-arrow" style="font-size: 0.8rem;">➔</div>`;
+                }
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+        
+        container.innerHTML = html;
+        container.style.display = 'block'; // 秀出區塊
+        btn.style.display = 'none';        // 隱藏展開按鈕
+    }
+
+    function copyResultToClipboard() {
+        const steps = gameState.currentPath.length - 2;
+        const pathString = gameState.currentPath.join(' ➔ ');
+        const shareText = `🪐 失眠藥廣播劇之六度圈與Game 🌙\n\n📍 0度起點：${gameState.startChar}\n🎯 6度終點：${gameState.endChar}\n🧩 使用了 ${steps} 個中間角色成功過關！\n\n🔗 關係鎖鏈：${pathString}\n\n一起來挑戰你的失眠藥廣播劇人物關係熟悉程度吧！`;
+        
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert('複製成功！快去分享給其他鎮民吧！');
+        }).catch(err => {
+            alert('複製失敗，可以手動截圖分享喔！');
+        });
+    }
+
+    window.onload = loadDataFromSheets;
+</script>
+
+</body>
+</html>
