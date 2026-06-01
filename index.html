@@ -14,19 +14,18 @@
     <title>失眠藥廣播劇之六度圈與Game</title>
     <style>
         :root {
-            --primary-color: #5c6bc0;    /* 質感深沉的劇場藍 */
+            --primary-color: #5c6bc0;    
             --secondary-color: #7986cb;
             --success-color: #2ecc71;
-            --warning-color: #f59e0b;    /* 提示專用黃色 */
-            --bg-color: #1a1c24;         /* 夜晚失眠主題：極致深色背景 */
-            --card-bg: #252836;          /* 深色卡片 */
-            --text-color: #f5f7fa;       /* 明亮文字 */
-            --text-muted: #9aa0b4;       /* 淡化文字 */
-            --accent-start: #4a90e2;     /* 起點藍 */
-            --accent-end: #e24a4a;       /* 終點紅 */
+            --warning-color: #f59e0b;    
+            --bg-color: #1a1c24;         
+            --card-bg: #252836;          
+            --text-color: #f5f7fa;       
+            --text-muted: #9aa0b4;       
+            --accent-start: #4a90e2;    
+            --accent-end: #e24a4a;       
         }
 
-        /* 新增 html 設定，強制把網頁最底層的畫布染成跟背景一樣的深色 */
         html {
             background-color: #1a1c24;
             height: 100%;
@@ -36,7 +35,6 @@
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             color: var(--text-color);
             margin: 0;
-            /* 修正：padding-top 加上環境變數，讓網頁內容自動避開手機上方的瀏海/動態島 */
             padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom)) 12px; 
             display: flex;
             justify-content: center;
@@ -54,7 +52,6 @@
             background-attachment: scroll;
         }
 
-        /* 核心包裝：支援電腦大螢幕與手機自適應 */
         .game-container {
             max-width: 850px;
             width: 100%; 
@@ -83,25 +80,7 @@
             font-size: 0.85rem;
             margin-bottom: 20px;
         }
-
-        /* 頂部進度條 */
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: #1e202c;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent-start), #a78bfa);
-            transition: width 0.3s ease;
-        }
-
-        /* 目標與對決區 */
+    
         .target-section {
             display: flex;
             justify-content: space-between;
@@ -144,7 +123,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* 歷程紀錄（關係鏈） */
         .path-section {
             margin-bottom: 20px;
             padding: 15px;
@@ -189,7 +167,6 @@
             font-size: 1rem;
         }
 
-        /* 選擇區（按鈕格網） */
         .selection-section {
             margin-bottom: 20px;
         }
@@ -225,7 +202,6 @@
             border-color: transparent;
         }
 
-        /* 控制與操作區 */
         .control-footer {
             display: flex;
             flex-direction: column;
@@ -257,7 +233,6 @@
             box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
         }
 
-        /* 嵌入式提示文字樣式區 */
         .hint-display-box {
             background: rgba(245, 158, 11, 0.1);
             border-left: 4px solid var(--warning-color);
@@ -281,7 +256,6 @@
             font-size: 0.9rem;
         }
 
-        /* 彈窗樣式優化 */
         .success-overlay {
             display: none;
             position: fixed;
@@ -305,18 +279,17 @@
             max-width: 500px;
             width: 100%;
             box-sizing: border-box;
-            max-height: 90vh; /* 限制最高高度防溢出 */
+            max-height: 90vh;
             display: flex;
             flex-direction: column;
         }
 
         .success-scroll-area {
-            overflow-y: auto; /* 內容過長時允許內部捲動（特別是顯示其他答案時） */
+            overflow-y: auto; 
             padding-right: 4px;
             flex: 1;
         }
 
-        /* 客製化捲動條 */
         .success-scroll-area::-webkit-scrollbar {
             width: 6px;
         }
@@ -346,7 +319,7 @@
 
         .btn-restart { background: var(--success-color); color: white; }
         .btn-share { background: #4a90e2; color: white; }
-        .btn-show-others { background: #a78bfa; color: white; } /* 其他答案按鈕專用紫色 */
+        .btn-show-others { background: #a78bfa; color: white; } 
 
         .answer-block {
             margin-top: 15px;
@@ -365,7 +338,6 @@
             color: var(--text-muted);
         }
 
-        /* 行動裝置媒體查詢（RWD 核心） */
         @media (max-width: 600px) {
             h1 { font-size: 1.4rem; }
             .game-container { padding: 15px; }
@@ -414,12 +386,9 @@
 </div>
 
 <script>
-    // ==========================================
-    // 配置您的 Google Sheets API 資訊
-    // ==========================================
+
     const SPREADSHEET_ID = '1srN4k7xMuGOZFz1JgsuFRfFvRQeXcBCiAcAjPnk1_JI'; 
     const API_KEY = 'AIzaSyASvYZevWiECOAXp8ab9S4Xd1V97Kpw714';
-    // ==========================================
 
     let characterList = []; 
     let remarksMap = {};    
@@ -542,7 +511,7 @@
         let attempts = 0;
         let validPaths = [];
 
-        while (!validQuestionFound && attempts < 500) { // 提高嘗試次數以確保找到符合條件的組合
+        while (!validQuestionFound && attempts < 500) { 
             attempts++;
             rand1 = Math.floor(Math.random() * characterList.length);
             rand2 = Math.floor(Math.random() * characterList.length);
@@ -554,15 +523,13 @@
             let tempStart = characterList[rand1];
             let tempEnd = characterList[rand2];
             
-            // 【核心修改】：檢查這兩個角色是否直接認識（直連）
             const startNeighbors = matrixData[tempStart] || [];
             if (startNeighbors.includes(tempEnd)) {
-                continue; // 如果直接認識，跳過這組，重新抽取
+                continue; 
             }
             
             validPaths = findAllShortestPaths(tempStart, tempEnd);
             
-            // 確保有解，且最短路徑大於 1（保證不直連）並在限制步數內
             if (validPaths.length > 0 && validPaths[0].length - 1 > 1 && (validPaths[0].length - 1) <= gameState.maxSteps) {
                 validQuestionFound = true;
                 gameState.startChar = tempStart;
@@ -570,7 +537,6 @@
             }
         }
 
-        // 萬一嘗試了 500 次都找不到（極罕見情況），作為保底機制
         if (!validQuestionFound) {
             gameState.startChar = characterList[rand1];
             gameState.endChar = characterList[rand2];
@@ -624,10 +590,6 @@
         let html = `
             <h1>失眠藥廣播劇之六度圈與Game</h1>
             <div class="subtitle">為各個廣播劇角色於大千世界找出他們的六度圈連結</div>
-
-            <div class="progress-bar-container">
-                <div class="progress-bar" style="width: ${progressPercent}%"></div>
-            </div>
             
             <div class="target-section">
                 <div class="char-display start-node">
@@ -730,7 +692,7 @@
         } else {
             const steps = paths[0].length - 2;
             html += `<p style="text-align:center; color:var(--success-color); font-weight:bold; margin-bottom:15px; font-size:0.9rem; padding:0 5px;">
-                        共找到 ${paths.length} 組最少僅需 ${steps} 個中間人的六度鎖鏈路線：
+                        共找到 ${paths.length} 組最少僅需 ${steps} 個連接角色的六度鎖鏈路線：
                      </p>`;
 
             paths.forEach((path, pathIndex) => {
@@ -779,19 +741,15 @@
         renderEngine();
     }
 
-    // 智能處理「恭喜彈窗」與「其他最佳解答」按鈕顯示
     function showSuccess() {
         const steps = gameState.currentPath.length - 2; 
         document.getElementById('successDetails').innerHTML = `恭喜你成功用 <strong>${steps}</strong> 個角色，在失眠藥宇宙中將 「<strong>${gameState.startChar}</strong>」 與 「<strong>${gameState.endChar}</strong>」 連結在一起`;
         
-        // 重置彈窗內的隱藏區塊
         document.getElementById('otherAnswersContainer').style.display = 'none';
         document.getElementById('otherAnswersContainer').innerHTML = '';
         
-        // 尋找全域最短解法
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
         
-        // 判定是否有多於一個答案
         if (allPaths.length > 1) {
             document.getElementById('btnShowOthers').style.display = 'block';
         } else {
@@ -801,7 +759,6 @@
         document.getElementById('successOverlay').style.display = 'flex';
     }
 
-    // 在同一個 Pop-up Box 裡無縫呈現其他正確答案
     function displayAlternativeAnswers() {
         const container = document.getElementById('otherAnswersContainer');
         const btn = document.getElementById('btnShowOthers');
@@ -842,8 +799,8 @@
         html += `</div>`;
         
         container.innerHTML = html;
-        container.style.display = 'block'; // 秀出區塊
-        btn.style.display = 'none';        // 隱藏展開按鈕
+        container.style.display = 'block'; 
+        btn.style.display = 'none';        
     }
 
     function copyResultToClipboard() {
