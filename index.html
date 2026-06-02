@@ -238,7 +238,7 @@
         .floating-actions {
             position: absolute;
             right: 10px;
-            bottom: 30%; /* 避開下方藍色角色選擇面板的頂部位置 */
+            bottom: 40%; /* 避開下方藍色角色選擇面板的頂部位置 */
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -730,16 +730,11 @@
             return;
         }
 
-        // 更新外側小字提示
-       // document.getElementById('startLabelOuter').innerText = `0度起點：${gameState.startChar}`;
-       // document.getElementById('endLabelOuter').innerText = `6度終點：${gameState.endChar}`;
-
         // --- 動態渲染中央關係鏈 (起點方格 + 5個中間人方格 + 終點方格) ---
         const pathContainer = document.getElementById('verticalPathContainer');
         let pathHtml = '';
 
         // 1. 渲染頂部「0度起點」方格
-                
         pathHtml += `
             <div id="startLabelOuter" class="game-outer-label-top">0度起點</div>
             <div class="node-box start-node" onclick="handleRollback(0)">
@@ -782,17 +777,39 @@
         
         titleEl.innerText = `請選擇「${currentCharacter}」認識的角色`;
 
+        // 獲取目前角色認識的所有人
+        const acquaintances = matrixData[currentCharacter] || [];
+
+        // 【Bug 修復核心邏輯】
+        // 當 connectionsCount 達到 maxSteps - 1 (即 5 個中間人填滿時)
         if (connectionsCount >= gameState.maxSteps - 1) {
-            gridEl.innerHTML = `
-                <div class="empty-notice">
-                    ⚠️ 已達到中間人數量上限！未能成功連接終點。<br>
-                    請點擊上方已選方格退回重選，<br>
-                    或點擊右側功能鈕查看答案。
-                </div>`;
-            return;
+            // 檢查這個第5中間人(如蔡芷涵)的熟人名單裡，有沒有包含終點(如余海)
+            if (acquaintances.includes(gameState.endChar)) {
+                // 如果可以接上終點，只渲染「終點角色」這一個按鈕給玩家按下去
+                let gridHtml = '';
+                const name = gameState.endChar;
+                const remarkText = remarksMap[name] ? `<span class="sub-remark">${remarksMap[name]}</span>` : '';
+                gridHtml += `
+                    <button class="btn-option" style="border-color: #e57373; color: #e57373;" onclick="handleSelectCharacter('${name}')">
+                        <span>🎯 前往終點：${name}</span>
+                        ${remarkText}
+                    </button>
+                `;
+                gridEl.innerHTML = gridHtml;
+                return; // 攔截成功，讓玩家可以順利點擊終點通關
+            } else {
+                // 如果真的接不上終點，才顯示失敗警告
+                gridEl.innerHTML = `
+                    <div class="empty-notice">
+                        ⚠️ 已達到中間人數量上限！未能成功連接終點。<br>
+                        請點擊上方已選方格退回重選，<br>
+                        或點擊右側功能鈕查看答案。
+                    </div>`;
+                return;
+            }
         }
 
-        const acquaintances = matrixData[currentCharacter] || [];
+        // 未滿 5 個中間人時的正常渲染邏輯
         if (acquaintances.length === 0) {
             gridEl.innerHTML = `<div class="empty-notice">此角色在當前宇宙中無向下延展的關係，請點選上方鎖鏈回溯。</div>`;
         } else {
