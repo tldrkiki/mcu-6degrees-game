@@ -3,264 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#1a1c24">
+    <meta name="theme-color" content="#7d84b2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta property="og:type" content="website" />
     <meta property="og:title" content="失眠藥廣播劇之六度圈與Game" />
     <meta property="og:description" content="為各個廣播劇角色於大千世界找出他們的六度圈連結" />
-    <meta property="og:image" content="https://github.com/tldrkiki/mcu-6degrees-game/blob/main/6degrees-game.png?raw=true" />
+    <meta property="og:image" content="https://github.com/kikiwoo702/mcu-6degrees-game/blob/main/6degrees-game.png?raw=true" />
     <meta property="og:url" content="https://mcu-6degrees-game.vercel.app/" />
     <title>失眠藥廣播劇之六度圈與Game</title>
     <style>
         :root {
-            --primary-color: #5c6bc0;    
-            --secondary-color: #7986cb;
+            --primary-purple: #7986cb;   /* 主色調藍紫 */
+            --light-purple: #9fa8da;     /* 邊框與淡色文字 */
+            --card-bg: #ffffff;          /* 純白質感卡片背景 */
+            --text-dark: #333333;        /* 內文深色字 */
+            --text-light: #ffffff;       /* 白色文字 */
             --success-color: #2ecc71;
-            --warning-color: #f59e0b;    
-            --bg-color: #1a1c24;         
-            --card-bg: #252836;          
-            --text-color: #f5f7fa;       
-            --text-muted: #9aa0b4;       
-            --accent-start: #4a90e2;    
-            --accent-end: #e24a4a;       
+            --warning-color: #f59e0b;
         }
 
-        html {
-            background-color: #1a1c24;
-            height: 100%;
-        }
-
-        body {
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            color: var(--text-color);
+        html, body {
             margin: 0;
-            padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom)) 12px; 
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #7487c5;
+            background-image: linear-gradient(rgba(26, 28, 36, 0.3), rgba(26, 28, 36, 0.2)), url('https://github.com/tldrkiki/mcu-6degrees-game/blob/main/6degrees-game-background.PNG?raw=true');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
-            min-height: 100vh;
-            min-height: 100dvh; 
-            box-sizing: border-box;
-
-            background-image: 
-                linear-gradient(rgba(26, 28, 36, 0.8), rgba(26, 28, 36, 0.8)), 
-                url('https://lh3.googleusercontent.com/d/1nKBFODyRkKt99TdmRaYDT_urVfu3oG3u'); 
-            
-            background-size: cover;          
-            background-position: center;     
-            background-repeat: no-repeat;    
-            background-attachment: scroll;
-        }
-
-        .game-container {
-            max-width: 850px;
-            width: 100%; 
-            background: var(--card-bg);
-            padding: 20px; 
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            align-items: center;
+            padding: calc(10px + env(safe-area-inset-top)) 15px calc(10px + env(safe-area-inset-bottom)) 15px;
             box-sizing: border-box;
         }
 
-        h1 {
-            text-align: center;
-            color: #fff;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            font-size: 1.6rem; 
-            letter-spacing: 1px;
-            /* background: linear-gradient(45deg, #a78bfa, #60a5fa); 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; */
+        /* ==========================================
+           【首頁樣式】
+           ========================================== */
+        .cover-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--text-light);
+            box-sizing: border-box;
+            padding: 40px 10px;
         }
 
-        .subtitle {
+        .cover-header {
+            font-size: 1.8rem;
+            font-weight: 500;
+            line-height: 1.4;
+            letter-spacing: 2px;
+            opacity: 0.95;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .cover-main {
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            margin-top: -40px;
+        }
+
+        .cover-title {
+            font-size: 2.8rem;
+            font-weight: bold;
             margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-    
-        .target-section {
+
+        .cover-subtitle {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            letter-spacing: 1px;
+        }
+
+        .btn-start-game {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: var(--text-light);
+            border-radius: 50px;
+            padding: 16px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1e202c;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #2d3142;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .char-display {
+        .btn-start-game:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-start-game .arrow {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-start-game:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        /* ==========================================
+           【遊戲頁面樣式】
+           ========================================== */
+        .game-container {
+            display: none; 
+            width: 100%;
+            max-width: 480px;
+            height: 100%;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* 0度起點標題：配合主調的優雅白色文字，置於方格正上方外側 */
+        .game-outer-label-top {
+            text-align: center;
+            color: grey;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-bottom: 0px;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        /* 2.png 的上半圓大白卡片 */
+        .game-main-card {
+            background: var(--card-bg);
+            border-radius: 40px 40px 40px 40px; 
             flex: 1;
-            text-align: center;
-            padding: 4px;
-        }
-
-        .char-name {
-            font-size: 1.2rem; 
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            word-break: break-all;
-        }
-
-        .start-node .char-name { color: var(--accent-start); }
-        .end-node .char-name { color: var(--accent-end); }
-
-        .char-remark {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-            min-height: 16px;
-            word-break: break-all;
-        }
-
-        .arrow-indicator {
-            font-size: 1.3rem;
-            color: #3f445e;
-            padding: 0 6px;
-            animation: pulse 2s infinite;
-        }
-
-        .path-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 2px dashed #3f445e;
-            border-radius: 12px;
-            background: rgba(30, 32, 44, 0.4);
-        }
-
-        .path-title {
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-bottom: 12px;
-            color: var(--text-muted);
-        }
-
-        .path-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            padding: 20px 20px 10px 20px;
+            box-sizing: border-box;
+            overflow: hidden; 
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
+            position: relative; /* 供右下角懸浮按鈕做絕對定位 */
+        }
+
+        /* 關係鎖鏈垂直鏈接區 */
+        .vertical-path-container {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px; 
+            gap: 5px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
         }
 
-        .path-node {
-            background: #2d3142;
-            border: 1px solid #3f445e;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .node-box {
+            width: 190px;
+            background-color: var(--primary-purple);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .path-node:hover {
-            background: #3d435c;
-            border-color: #7986cb;
-        }
-
-        .path-arrow {
-            color: var(--text-muted);
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            box-shadow: 0 3px 8px rgba(121, 134, 203, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid transparent;
+            word-break: break-all;
         }
 
-        .selection-section {
-            margin-bottom: 20px;
+        .node-box:hover {
+            transform: scale(1.03);
+        }
+
+        /* 起點與終點節點在鏈結中的特別樣式 */
+        .node-box.start-node {
+            background-color: #6573c3;
+        }
+        .node-box.end-node {
+            background-color: #e57373;
+            box-shadow: 0 3px 8px rgba(229, 115, 115, 0.3);
+        }
+
+        /* 尚未解鎖的空方格 */
+        .node-box.empty {
+            background-color: transparent;
+            border: 2px solid #cbd5e1;
+            color: #94a3b8;
+            cursor: default;
+            box-shadow: none;
+            font-weight: normal;
+            font-size: 0.85rem;
+            padding: 8px 14px;
+        }
+
+        .node-arrow {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1;
+        }
+
+        /* 6度終點標題：配合主調，置於白方格正下方外側 */
+        .game-outer-label-bottom {
+            text-align: center;
+            color: grey;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-top: 3px;
+            margin-bottom: 0px;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================
+           【懸浮功能按鈕群】精準固定在白色大卡片右下角內側
+           ========================================== */
+        .floating-actions {
+            position: absolute;
+            right: 15px;
+            bottom: 300px; /* 避開下方藍色角色選擇面板的頂部位置 */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        /* 圓形按鈕優化排版，確保「查看答案」不超出 */
+        .circle-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background-color: #113160; 
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            transition: all 0.2s ease;
+            font-size: 0.68rem; 
+            font-weight: bold;
+            padding: 2px;
+            text-align: center;
+            line-height: 1.2;
+            box-sizing: border-box;
+        }
+
+        .circle-btn:hover {
+            transform: scale(1.06);
+            background-color: #1a427a;
+        }
+
+        .circle-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            margin-bottom: 2px;
+        }
+
+        /* 提示文字盒 */
+        .game-hint-box {
+            background: #fff8e1;
+            border-left: 4px solid var(--warning-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #5d4037;
+            margin-bottom: 10px;
+            display: none;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* ==========================================
+           【下方角色選擇區】
+           ========================================== */
+        .selection-panel {
+            background-color: #5582be; 
+            margin: 0 -20px -15px -20px; 
+            padding: 12px 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+            z-index: 5;
+            border-radius: 0px 0px 40px 40px;
         }
 
         .selection-title {
+            color: white;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
             font-weight: bold;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .options-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .options-scroll-area::-webkit-scrollbar {
+            width: 5px;
+        }
+        .options-scroll-area::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
 
         .btn-option {
-            background: #2d3142;
-            border: 1px solid #3f445e;
-            color: var(--text-color);
-            padding: 12px 8px;
-            border-radius: 10px;
+            background: white;
+            border: 1px solid #b0bec5;
+            color: #2196f3; 
+            padding: 8px 4px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: bold;
+            font-size: 0.85rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            word-break: break-all; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            word-break: break-all;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 42px;
+            transition: all 0.2s ease;
         }
 
         .btn-option:hover {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-color: transparent;
+            background: #e3f2fd;
+            transform: translateY(-1px);
         }
 
-        .control-footer {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid #2d3142;
+        .btn-option .sub-remark {
+            font-size: 0.65rem;
+            color: #78909c;
+            font-weight: normal;
+            margin-top: 2px;
         }
 
-        .control-buttons-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .btn-hint {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+        .empty-notice {
+            grid-column: 1 / -1;
             color: white;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            opacity: 0.9;
         }
 
-        .hint-display-box {
-            background: rgba(245, 158, 11, 0.1);
-            border-left: 4px solid var(--warning-color);
-            padding: 10px 14px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            color: #fef3c7;
-            line-height: 1.5;
-            display: none; 
-            word-break: break-all;
-        }
-
-        .btn-control {
-            background: #4b5563;
-            color: white;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
+        /* ==========================================
+           【彈窗與答案揭曉樣式】
+           ========================================== */
         .success-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 11, 15, 0.8);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
@@ -270,123 +395,163 @@
         }
 
         .success-card {
-            background: var(--card-bg);
-            border: 1px solid #3f445e;
+            background: white;
             padding: 25px;
-            border-radius: 16px;
+            border-radius: 24px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
             width: 100%;
             box-sizing: border-box;
-            max-height: 90vh;
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
+            color: var(--text-dark);
         }
 
         .success-scroll-area {
-            overflow-y: auto; 
-            padding-right: 4px;
+            overflow-y: auto;
             flex: 1;
-        }
-
-        .success-scroll-area::-webkit-scrollbar {
-            width: 6px;
-        }
-        .success-scroll-area::-webkit-scrollbar-thumb {
-            background: #3f445e;
-            border-radius: 4px;
+            padding-right: 4px;
         }
 
         .success-title {
             color: var(--success-color);
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
             margin-bottom: 12px;
         }
 
         .btn-action {
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 0.95rem;
-            border-radius: 8px;
+            border-radius: 50px;
             cursor: pointer;
             margin: 6px 0;
             border: none;
             font-weight: bold;
-            width: 100%; 
+            width: 100%;
             box-sizing: border-box;
+            transition: transform 0.2s;
         }
 
-        .btn-restart { background: var(--success-color); color: white; }
-        .btn-share { background: #4a90e2; color: white; }
-        .btn-show-others { background: #a78bfa; color: white; } 
+        .btn-action:hover { transform: translateY(-1px); }
+        .btn-restart { background: var(--primary-purple); color: white; }
+        .btn-share { background: #5582be; color: white; }
+        .btn-show-others { background: #9fa8da; color: white; }
 
         .answer-block {
-            margin-top: 15px;
-            margin-bottom: 15px;
-            padding: 12px;
-            background: rgba(92, 107, 192, 0.1);
-            border: 1px solid rgba(92, 107, 192, 0.3);
-            border-radius: 8px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f5f7fa;
+            border: 1px solid #e4e7eb;
+            border-radius: 12px;
             text-align: left;
         }
 
-        .loading {
+        .answer-path-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .answer-node {
+            background: #e0e4f5;
+            color: #3f51b5;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .loading-view {
+            color: white;
+            font-size: 1.2rem;
             text-align: center;
-            font-size: 1.1rem;
-            padding: 50px;
-            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 1.4rem; }
-            .game-container { padding: 15px; }
-            .options-grid {
-                grid-template-columns: repeat(2, 1fr); 
-                gap: 8px;
-            }
-            .char-name { font-size: 1.1rem; }
-            .btn-option { padding: 10px 6px; font-size: 0.9rem; }
-            .btn-option .char-remark { font-size: 0.7rem; }
-            .btn-hint, .btn-control { padding: 8px 12px; font-size: 0.85rem; }
-        }
-
-        @media (max-width: 380px) {
-            .options-grid {
-                grid-template-columns: 1fr; 
-            }
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
+        @media (max-width: 360px) {
+            .options-grid { grid-template-columns: repeat(2, 1fr); }
+            .node-box { width: 140px; padding: 6px; font-size: 0.85rem; }
+            .cover-title { font-size: 2.2rem; }
+            .floating-actions { bottom: 200px; }
         }
     </style>
 </head>
 <body>
 
-<div class="game-container" id="gameContainer">
-    <div class="loading">🪐 載入大千世界檔案中...</div>
+<div class="app-wrapper">
+    <div id="loadingView" class="loading-view">🪐 載入大千世界檔案中...</div>
+
+    <div id="coverView" class="cover-container" style="display: none;">
+        <div class="cover-header">
+            失眠藥廣播劇<br>之
+        </div>
+        <div class="cover-main">
+            <div class="cover-title">六度圈與Game</div>
+            <div class="cover-subtitle">連接劇中人物之間的鎖鏈<br>找出最短的社交路徑</div>
+        </div>
+        <div>
+            <button class="btn-start-game" onclick="switchToGameView()">
+                <span>進入遊戲</span>
+                <span class="arrow">➔</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="gameView" class="game-container">
+        
+        <div class="game-main-card">
+            <div class="floating-actions">
+                <button class="circle-btn" onclick="triggerGameHint()" title="獲取提示">
+                    <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg>
+                    <div>提示</div>
+                </button>
+                <button class="circle-btn" onclick="showAnswersView()" title="查看答案">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    <div>查看</div><div>答案</div>
+                </button>
+            </div>
+
+            <div id="hintDisplayBox" class="game-hint-box"></div>
+
+            <div class="vertical-path-container" id="verticalPathContainer">
+                </div>
+
+            <div class="selection-panel">
+                <div class="selection-title" id="selectionTitle">請選擇下一位連結角色：</div>
+                <div class="options-scroll-area">
+                    <div class="options-grid" id="optionsGrid">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="success-overlay" id="successOverlay">
     <div class="success-card">
-        <div class="success-title">🎉 連結成功！</div>
+        <div class="success-title" id="overlayTitle">🎉 連結成功！</div>
         <div class="success-scroll-area">
-            <p id="successDetails" style="line-height: 1.6; margin-bottom: 20px; color:#e2e8f0; font-size: 0.95rem;"></p>
+            <p id="successDetails" style="line-height: 1.5; margin-bottom: 15px; font-size: 0.9rem; color: #4b5563; text-align: left;"></p>
             
             <div id="otherAnswersContainer" style="display: none;"></div>
             
             <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">🔍 顯示其他最佳答案</button>
             <button class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
-            <button class="btn-action btn-restart" onclick="initGame()">再玩一次</button>
+            <button class="btn-action btn-restart" onclick="restartNewGame()">再玩一次</button>
         </div>
     </div>
 </div>
 
 <script>
-
+    // ==========================================
+    // Google Sheets API 資訊
+    // ==========================================
     const SPREADSHEET_ID = '1srN4k7xMuGOZFz1JgsuFRfFvRQeXcBCiAcAjPnk1_JI'; 
     const API_KEY = 'AIzaSyASvYZevWiECOAXp8ab9S4Xd1V97Kpw714';
 
@@ -398,7 +563,7 @@
         startChar: '',
         endChar: '',
         currentPath: [], 
-        maxSteps: 6      
+        maxSteps: 6      // 最多 5 個中間人
     };
 
     async function loadDataFromSheets() {
@@ -449,22 +614,79 @@
                 }
             });
 
-            initGame();
+            document.getElementById('loadingView').style.display = 'none';
+            document.getElementById('coverView').style.display = 'flex';
+
+            initGameData();
 
         } catch (error) {
             console.error(error);
-            document.getElementById('gameContainer').innerHTML = `<div class="loading" style="color:#ef4444;">資料連線失敗，請確認試算表已開啟公開檢視。<br><small>${error.message}</small></div>`;
+            document.getElementById('loadingView').innerHTML = `<div style="color:#ef4444; padding:20px;">資料連線失敗<br><small>${error.message}</small></div>`;
         }
+    }
+
+    function switchToGameView() {
+        document.getElementById('coverView').style.display = 'none';
+        document.getElementById('gameView').style.display = 'flex';
+    }
+
+    function restartNewGame() {
+        document.getElementById('successOverlay').style.display = 'none';
+        initGameData();
+    }
+
+    function initGameData() {
+        document.getElementById('otherAnswersContainer').style.display = 'none';
+        document.getElementById('otherAnswersContainer').innerHTML = '';
+        document.getElementById('btnShowOthers').style.display = 'none';
+        document.getElementById('hintDisplayBox').style.display = 'none';
+
+        if (characterList.length < 2) return;
+
+        let rand1, rand2;
+        let validQuestionFound = false;
+        let attempts = 0;
+        let validPaths = [];
+
+        while (!validQuestionFound && attempts < 500) {
+            attempts++;
+            rand1 = Math.floor(Math.random() * characterList.length);
+            rand2 = Math.floor(Math.random() * characterList.length);
+            
+            while (rand1 === rand2) {
+                rand2 = Math.floor(Math.random() * characterList.length);
+            }
+
+            let tempStart = characterList[rand1];
+            let tempEnd = characterList[rand2];
+            
+            const startNeighbors = matrixData[tempStart] || [];
+            if (startNeighbors.includes(tempEnd)) continue; 
+            
+            validPaths = findAllShortestPaths(tempStart, tempEnd);
+            
+            if (validPaths.length > 0 && validPaths[0].length - 1 > 1 && (validPaths[0].length - 1) <= gameState.maxSteps) {
+                validQuestionFound = true;
+                gameState.startChar = tempStart;
+                gameState.endChar = tempEnd;
+            }
+        }
+
+        if (!validQuestionFound) {
+            gameState.startChar = characterList[rand1];
+            gameState.endChar = characterList[rand2];
+        }
+
+        gameState.currentPath = [gameState.startChar]; 
+        renderGameEngine();
     }
 
     function findAllShortestPaths(start, end) {
         if (!matrixData[start] || !matrixData[end]) return [];
-        
         let queue = [[start]];
         let shortestPaths = [];
         let minLength = Infinity;
         let visitedLengths = {}; 
-        
         visitedLengths[start] = 1;
 
         while (queue.length > 0) {
@@ -495,265 +717,184 @@
         return shortestPaths;
     }
 
-    function initGame() {
-        document.getElementById('successOverlay').style.display = 'none';
-        document.getElementById('otherAnswersContainer').style.display = 'none';
-        document.getElementById('otherAnswersContainer').innerHTML = '';
-        document.getElementById('btnShowOthers').style.display = 'none';
+    function renderGameEngine() {
+        const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
+        const connectionsCount = gameState.currentPath.length - 1;
 
-        if (characterList.length < 2) {
-            alert("角色數量不足。");
+        if (currentCharacter === gameState.endChar) {
+            showSuccessPopup();
             return;
         }
 
-        let rand1, rand2;
-        let validQuestionFound = false;
-        let attempts = 0;
-        let validPaths = [];
+        // 更新外側小字提示
+       // document.getElementById('startLabelOuter').innerText = `0度起點：${gameState.startChar}`;
+       // document.getElementById('endLabelOuter').innerText = `6度終點：${gameState.endChar}`;
 
-        while (!validQuestionFound && attempts < 500) { 
-            attempts++;
-            rand1 = Math.floor(Math.random() * characterList.length);
-            rand2 = Math.floor(Math.random() * characterList.length);
-            
-            while (rand1 === rand2) {
-                rand2 = Math.floor(Math.random() * characterList.length);
-            }
+        // --- 動態渲染中央關係鏈 (起點方格 + 5個中間人方格 + 終點方格) ---
+        const pathContainer = document.getElementById('verticalPathContainer');
+        let pathHtml = '';
 
-            let tempStart = characterList[rand1];
-            let tempEnd = characterList[rand2];
-            
-            const startNeighbors = matrixData[tempStart] || [];
-            if (startNeighbors.includes(tempEnd)) {
-                continue; 
+        // 1. 渲染頂部「0度起點」方格
+                
+        pathHtml += `
+            <div id="startLabelOuter" class="game-outer-label-top">0度起點</div>
+            <div class="node-box start-node" onclick="handleRollback(0)">
+                ${gameState.startChar}
+            </div>
+            <div class="node-arrow">↓</div>
+        `;
+
+        // 2. 渲染中間 5 個連結角色方格
+        for (let i = 1; i <= 5; i++) {
+            if (gameState.currentPath[i] && gameState.currentPath[i] !== gameState.endChar) {
+                // 已填入的中間人
+                pathHtml += `
+                    <div class="node-box" onclick="handleRollback(${i})">
+                        ${gameState.currentPath[i]}
+                    </div>
+                `;
+            } else {
+                // 空白方格
+                pathHtml += `
+                    <div class="node-box empty">&nbsp;</div>
+                `;
             }
-            
-            validPaths = findAllShortestPaths(tempStart, tempEnd);
-            
-            if (validPaths.length > 0 && validPaths[0].length - 1 > 1 && (validPaths[0].length - 1) <= gameState.maxSteps) {
-                validQuestionFound = true;
-                gameState.startChar = tempStart;
-                gameState.endChar = tempEnd;
-            }
+            pathHtml += `<div class="node-arrow">↓</div>`;
         }
 
-        if (!validQuestionFound) {
-            gameState.startChar = characterList[rand1];
-            gameState.endChar = characterList[rand2];
+        // 3. 渲染底部「6度終點」方格
+        pathHtml += `
+            <div class="node-box end-node">
+                ${gameState.endChar}
+            </div>
+            <div id="endLabelOuter" class="game-outer-label-bottom">6度終點</div>
+        `;
+
+        pathContainer.innerHTML = pathHtml;
+
+        // --- 下方角色選擇區更新 ---
+        const titleEl = document.getElementById('selectionTitle');
+        const gridEl = document.getElementById('optionsGrid');
+        
+        titleEl.innerText = `請選擇「${currentCharacter}」認識的角色`;
+
+        if (connectionsCount >= gameState.maxSteps - 1) {
+            gridEl.innerHTML = `
+                <div class="empty-notice">
+                    ⚠️ 已達到中間人數量上限！未能成功連接終點。<br>
+                    請點擊上方已選方格退回重選，<br>
+                    或點擊右側功能鈕查看答案。
+                </div>`;
+            return;
         }
 
-        gameState.currentPath = [gameState.startChar]; 
-        renderEngine();
+        const acquaintances = matrixData[currentCharacter] || [];
+        if (acquaintances.length === 0) {
+            gridEl.innerHTML = `<div class="empty-notice">此角色在當前宇宙中無向下延展的關係，請點選上方鎖鏈回溯。</div>`;
+        } else {
+            let gridHtml = '';
+            acquaintances.forEach(name => {
+                const remarkText = remarksMap[name] ? `<span class="sub-remark">${remarksMap[name]}</span>` : '';
+                gridHtml += `
+                    <button class="btn-option" onclick="handleSelectCharacter('${name}')">
+                        <span>${name}</span>
+                        ${remarkText}
+                    </button>
+                `;
+            });
+            gridEl.innerHTML = gridHtml;
+        }
+    }
+
+    function handleSelectCharacter(name) {
+        gameState.currentPath.push(name);
+        renderGameEngine();
+    }
+
+    function handleRollback(index) {
+        if (index === 0 && gameState.currentPath.length === 1) return;
+        if (index >= gameState.currentPath.length) return;
+        gameState.currentPath = gameState.currentPath.slice(0, index + 1);
+        document.getElementById('hintDisplayBox').style.display = 'none';
+        renderGameEngine();
     }
 
     function triggerGameHint() {
         const hintBox = document.getElementById('hintDisplayBox');
-        if (!hintBox) return;
-
         const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
         const remainingSteps = gameState.maxSteps - (gameState.currentPath.length - 1);
 
         if (currentCharacter === gameState.endChar) {
-            hintBox.innerHTML = `🎉 您已經成功抵達終點！`;
+            hintBox.innerHTML = `🎉 您已經抵達終點！`;
             hintBox.style.display = 'block';
             return;
         }
 
         let paths = findAllShortestPaths(currentCharacter, gameState.endChar);
-        
         if (paths.length === 0 || (paths[0].length - 1) > remainingSteps) {
-            hintBox.innerHTML = `⚠️ <strong>分析提示：</strong> 按照當前連法，在剩餘步數內無法抵達終點，建議點選上方關係鎖鏈後退重選。`;
+            hintBox.innerHTML = `⚠️ <strong>提示：</strong> 當前路徑在剩餘步數內無解，建議點選上方鎖鏈返回重選。`;
             hintBox.style.display = 'block';
             return;
         }
 
         let randomPath = paths[Math.floor(Math.random() * paths.length)];
         let nextCharHint = randomPath[1]; 
-        
-        let remark = remarksMap[nextCharHint] ? ` — <small style="color:var(--text-muted);">${remarksMap[nextCharHint]}</small>` : '';
-        hintBox.innerHTML = `💡 <strong>過關提示：</strong> 推薦的下一個連接角色為 【 <strong>${nextCharHint}</strong> 】${remark}`;
+        hintBox.innerHTML = `💡 <strong>過關提示：</strong> 推薦下一個連接：【 <strong>${nextCharHint}</strong> 】`;
         hintBox.style.display = 'block';
     }
 
-    function renderEngine() {
-        const container = document.getElementById('gameContainer');
-        const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
-
-        const connectionsCount = gameState.currentPath.length - 1;
-        const progressPercent = (connectionsCount / gameState.maxSteps) * 100;
-
-        if (currentCharacter === gameState.endChar) {
-            showSuccess();
-            return;
-        }
-
-        let html = `
-            <h1>失眠藥廣播劇 之 六度圈與Game</h1>
-            <div class="subtitle">為各個廣播劇角色於大千世界找出他們的六度圈連結</div>
-            
-            <div class="target-section">
-                <div class="char-display start-node">
-                    <div style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">0度起點</div>
-                    <div class="char-name">${gameState.startChar}</div>
-                    <div class="char-remark">${remarksMap[gameState.startChar] || ''}</div>
-                </div>
-                <div class="arrow-indicator">➔</div>
-                <div class="char-display end-node">
-                    <div style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); margin-bottom:4px;">6度終點</div>
-                    <div class="char-name">${gameState.endChar}</div>
-                    <div class="char-remark">${remarksMap[gameState.endChar] || ''}</div>
-                </div>
-            </div>
-
-            <div class="path-section">
-                <div class="path-title">目前關係鎖鏈 (點擊下方任意角色可重新選擇下個角色)：</div>
-                <div class="path-container">
-        `;
-
-        gameState.currentPath.forEach((char, index) => {
-            html += `
-                <div class="path-node" onclick="handleRollback(${index})">
-                    <div style="font-weight:bold; font-size:0.9rem;">${char}</div>
-                    ${remarksMap[char] ? `<div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">${remarksMap[char]}</div>` : ''}
-                </div>
-            `;
-            if (index < gameState.currentPath.length - 1) {
-                html += `<div class="path-arrow">➔</div>`;
-            }
-        });
-
-        html += `
-                </div>
-            </div>
-        `;
-
-        if (connectionsCount >= gameState.maxSteps) {
-            html += `
-                <div style="text-align:center; color:#fc8181; padding:20px; border:1px solid #742a2a; border-radius:12px; background:#2d1f24;">
-                    <h3 style="margin-top:0; font-size:1.1rem;">⚠️ 已達 5 個中間角色上限</h3>
-                    <p style="font-size:0.85rem; margin-bottom:15px;">未能成功抵達終點，請點選上方關係鎖鏈重新選擇角色。</p>
-                    <button class="btn-control" onclick="showAnswersView()">💡 查看正確答案</button>
-                    <button class="btn-control" style="background:var(--success-color); margin-left: 8px;" onclick="initGame()">🎲 直接開新一局</button>
-                </div>
-            `;
-        } else {
-            const acquaintances = matrixData[currentCharacter] || [];
-            
-            html += `
-                <div class="selection-section">
-                    <div class="selection-title">請選擇下一位連結角色（目前已使用 ${connectionsCount}/5個連接角色）：</div>
-                    <div class="options-grid">
-            `;
-
-            if (acquaintances.length === 0) {
-                html += `<div style="grid-column: 1/-1; color:var(--text-muted); text-align:center; padding:20px; background:#1e202c; border-radius:10px; font-size:0.85rem;">此角色沒有能向下延伸的關係線，請點選上方關係鎖鏈並重新選擇角色。</div>`;
-            } else {
-                acquaintances.forEach(name => {
-                    html += `
-                        <button class="btn-option" onclick="handleSelectCharacter('${name}')">
-                            <div style="font-weight:bold; font-size:0.9rem;">${name}</div>
-                            <div class="char-remark">${remarksMap[name] || ''}</div>
-                        </button>
-                    `;
-                });
-            }
-
-            html += `
-                    </div>
-                </div>
-                
-                <div class="control-footer">
-                    <div id="hintDisplayBox" class="hint-display-box"></div>
-                    <div class="control-buttons-row">
-                        <button class="btn-hint" onclick="triggerGameHint()">獲取過關提示</button>
-                        <button class="btn-hint" onclick="showAnswersView()">查看正確答案<</button>
-                </div>
-            `;
-        }
-
-        container.innerHTML = html;
-    }
-
     function showAnswersView() {
-        const container = document.getElementById('gameContainer');
         const paths = findAllShortestPaths(gameState.startChar, gameState.endChar);
+        const container = document.getElementById('otherAnswersContainer');
+        const titleEl = document.getElementById('overlayTitle');
+        const detailsEl = document.getElementById('successDetails');
+        const btnShowOthers = document.getElementById('btnShowOthers');
 
-        let html = `
-            <h1>揭曉正確答案</h1>
-            <div class="subtitle">從「${gameState.startChar}」到「${gameState.endChar}」最短的關係鎖鏈</div>
-        `;
+        titleEl.innerText = "🔮 正確答案揭曉";
+        btnShowOthers.style.display = 'none';
+        container.style.display = 'block';
 
         if (paths.length === 0) {
-            html += `
-                <div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.9rem;">
-                    <p>在 5 個中間人限制內，這兩位角色之間沒有符合規則的通路</p>
-                </div>
-            `;
+            detailsEl.innerHTML = `從「${gameState.startChar}」到「${gameState.endChar}」在 6 度限制內無通路。`;
+            container.innerHTML = '';
         } else {
             const steps = paths[0].length - 2;
-            html += `<p style="text-align:center; color:var(--success-color); font-weight:bold; margin-bottom:15px; font-size:0.9rem; padding:0 5px;">
-                        共找到 ${paths.length} 組最少僅需 ${steps} 個連接角色的六度鎖鏈路線：
-                     </p>`;
-
-            paths.forEach((path, pathIndex) => {
+            detailsEl.innerHTML = `最少僅需 <strong>${steps}</strong> 個中間人，共找到 ${paths.length} 組最佳解：`;
+            
+            let html = '';
+            paths.forEach((path, idx) => {
                 html += `
                     <div class="answer-block">
-                        <div style="font-size:0.75rem; color:var(--secondary-color); font-weight:bold; margin-bottom:8px;">解法 #${pathIndex + 1}</div>
-                        <div class="path-container">
+                        <div style="font-size:0.75rem; color:var(--primary-purple); font-weight:bold; margin-bottom:5px;">解法 #${idx+1}</div>
+                        <div class="answer-path-row">
                 `;
-                
-                path.forEach((char, index) => {
-                    html += `
-                        <div class="path-node" style="cursor:default; border-color:var(--primary-color); padding:6px 10px;">
-                            <div style="font-weight:bold; font-size:0.85rem;">${char}</div>
-                            ${remarksMap[char] ? `<div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">${remarksMap[char]}</div>` : ''}
-                        </div>
-                    `;
-                    if (index < path.length - 1) {
-                        html += `<div class="path-arrow" style="color:var(--primary-color);">➔</div>`;
-                    }
+                path.forEach((char, cIdx) => {
+                    html += `<span class="answer-node">${char}</span>`;
+                    if (cIdx < path.length - 1) html += `<span>➔</span>`;
                 });
-
-                html += `
-                        </div>
-                    </div>
-                `;
+                html += `</div></div>`;
             });
+            container.innerHTML = html;
         }
-
-        html += `
-            <div style="text-align:center; margin-top:20px;">
-                <button class="btn-action btn-restart" style="padding: 12px 30px; font-size:1rem; width:auto;" onclick="initGame()">開新一局</button>
-            </div>
-        `;
-
-        container.innerHTML = html;
+        document.getElementById('successOverlay').style.display = 'flex';
     }
 
-    function handleSelectCharacter(name) {
-        gameState.currentPath.push(name);
-        renderEngine();
-    }
-
-    function handleRollback(index) {
-        if (index === gameState.currentPath.length - 1) return;
-        gameState.currentPath = gameState.currentPath.slice(0, index + 1);
-        renderEngine();
-    }
-
-    function showSuccess() {
+    function showSuccessPopup() {
         const steps = gameState.currentPath.length - 2; 
-        document.getElementById('successDetails').innerHTML = `恭喜你成功用 <strong>${steps}</strong> 個角色，在失眠藥宇宙中將 「<strong>${gameState.startChar}</strong>」 與 「<strong>${gameState.endChar}</strong>」 連結在一起`;
+        const titleEl = document.getElementById('overlayTitle');
+        const detailsEl = document.getElementById('successDetails');
+        const btnShowOthers = document.getElementById('btnShowOthers');
+        
+        titleEl.innerText = "🎉 連結成功！";
+        detailsEl.innerHTML = `恭喜！你成功用 <strong>${steps}</strong> 個中間角色，將「<strong>${gameState.startChar}</strong>」與「<strong>${gameState.endChar}</strong>」連結在一起！`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
-        document.getElementById('otherAnswersContainer').innerHTML = '';
         
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
-        
         if (allPaths.length > 1) {
-            document.getElementById('btnShowOthers').style.display = 'block';
+            btnShowOthers.style.display = 'block';
         } else {
-            document.getElementById('btnShowOthers').style.display = 'none';
+            btnShowOthers.style.display = 'none';
         }
 
         document.getElementById('successOverlay').style.display = 'flex';
@@ -761,57 +902,39 @@
 
     function displayAlternativeAnswers() {
         const container = document.getElementById('otherAnswersContainer');
-        const btn = document.getElementById('btnShowOthers');
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
-        const steps = allPaths[0].length - 2;
-
-        let html = `
-            <div style="border-top: 1px solid #3f445e; margin-top: 15px; padding-top: 10px;">
-                <p style="color: var(--secondary-color); font-weight: bold; font-size: 0.9rem; text-align: left; margin-bottom: 5px;">
-                    💡 本題其餘最佳解法（共 ${allPaths.length} 種組合）：
-                </p>
-        `;
-
-        allPaths.forEach((path, pathIndex) => {
+        
+        let html = `<div style="border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; text-align:left;">
+                    <span style="font-size:0.8rem; font-weight:bold; color:#7986cb;">💡 本題其餘最佳解法：</span>`;
+        
+        allPaths.forEach((path, idx) => {
             html += `
                 <div class="answer-block">
-                    <div style="font-size:0.75rem; color:var(--warning-color); font-weight:bold; margin-bottom:6px;">解法 #${pathIndex + 1}</div>
-                    <div class="path-container">
+                    <div style="font-size:0.7rem; color:var(--warning-color); font-weight:bold; margin-bottom:4px;">組合 #${idx+1}</div>
+                    <div class="answer-path-row">
             `;
-            
-            path.forEach((char, index) => {
-                html += `
-                    <div class="path-node" style="cursor:default; border-color:var(--secondary-color); padding: 4px 8px; font-size: 0.8rem;">
-                        <div style="font-weight:bold;">${char}</div>
-                    </div>
-                `;
-                if (index < path.length - 1) {
-                    html += `<div class="path-arrow" style="font-size: 0.8rem;">➔</div>`;
-                }
+            path.forEach((char, cIdx) => {
+                html += `<span class="answer-node" style="background:#f0f0f0; color:#555;">${char}</span>`;
+                if (cIdx < path.length - 1) html += `<span>➔</span>`;
             });
-
-            html += `
-                    </div>
-                </div>
-            `;
+            html += `</div></div>`;
         });
-
         html += `</div>`;
         
         container.innerHTML = html;
-        container.style.display = 'block'; 
-        btn.style.display = 'none';        
+        container.style.display = 'block';
+        document.getElementById('btnShowOthers').style.display = 'none';
     }
 
     function copyResultToClipboard() {
         const steps = gameState.currentPath.length - 2;
         const pathString = gameState.currentPath.join(' ➔ ');
-        const shareText = `🪐 失眠藥廣播劇之六度圈與Game 🌙\n\n📍 0度起點：${gameState.startChar}\n🎯 6度終點：${gameState.endChar}\n🧩 使用了 ${steps} 個中間角色成功過關！\n\n🔗 關係鎖鏈：${pathString}\n\n一起來挑戰你的失眠藥廣播劇人物關係熟悉程度吧！`;
+        const shareText = `🪐 失眠藥廣播劇之六度圈與Game 🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩 成功使用了 ${steps} 個中間角色過關！\n\n⛓️ 關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥宇宙的角色熟悉度吧！`;
         
         navigator.clipboard.writeText(shareText).then(() => {
             alert('複製成功！快去分享給其他鎮民吧！');
-        }).catch(err => {
-            alert('複製失敗，可以手動截圖分享喔！');
+        }).catch(() => {
+            alert('複製失敗，可以直接截圖分享喔！');
         });
     }
 
