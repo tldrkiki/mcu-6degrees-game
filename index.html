@@ -478,7 +478,11 @@
             .options-grid { grid-template-columns: repeat(2, 1fr); }
             .node-box { width: 140px; padding: 6px; font-size: 0.85rem; }
             .cover-title { font-size: 2.2rem; }
-            .floating-actions { bottom: 0px; }
+            .floating-actions { 
+                bottom: auto;       /* 1. 先解除原本卡在卡片上方的底部定位 */
+                top: 38%;          /* 2. 改用 top（從頂部往下算）來強行壓低按鈕位置 */
+                right: 10px;        /* 3. 微調貼近右側邊緣，防止它移位 */
+    }
         }
     </style>
 </head>
