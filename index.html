@@ -546,7 +546,7 @@
             <div id="otherAnswersContainer" style="display: none;"></div>
             
             <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">🔍 顯示其他最佳答案</button>
-            <button class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
+            <button id="btnShareResult" class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
             <button class="btn-action btn-restart" onclick="restartNewGame()">再玩一次</button>
         </div>
     </div>
@@ -870,9 +870,11 @@
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
+        const btnShareResult = document.getElementById('btnShareResult'); // 取得分享按鈕
 
         titleEl.innerText = "🔮 正確答案揭曉";
         btnShowOthers.style.display = 'none';
+        if (btnShareResult) btnShareResult.style.display = 'none'; // 隱藏複製鏈結分享按鈕
         container.style.display = 'block';
 
         if (paths.length === 0) {
@@ -905,11 +907,13 @@
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
+        const btnShareResult = document.getElementById('btnShareResult'); // 取得分享按鈕
         
         titleEl.innerText = "🎉 連結成功！";
         detailsEl.innerHTML = `恭喜！你成功用 <strong>${steps}</strong> 個中間角色，將「<strong>${gameState.startChar}</strong>」與「<strong>${gameState.endChar}</strong>」連結在一起！`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
+        if (btnShareResult) btnShareResult.style.display = 'block'; // 玩家正常通關，顯示分享按鈕
         
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
         if (allPaths.length > 1) {
