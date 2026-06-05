@@ -12,6 +12,7 @@
     <meta property="og:image" content="https://github.com/kikiwoo702/mcu-6degrees-game/blob/main/6degrees-game.png?raw=true" />
     <meta property="og:url" content="https://mcu-6degrees-game.vercel.app/" />
     <title>失眠藥廣播劇之六度圈與Game</title>
+    <link href="hhttps://fonts.googleapis.com/css?family=Noto Sans TC" rel="stylesheet">
     <style>
         :root {
             --primary-purple: #7986cb;   /* 主色調藍紫 */
@@ -62,10 +63,11 @@
             color: var(--text-light);
             box-sizing: border-box;
             padding: 40px 10px;
+            font-family: 'Noto Sans TC', sans-serif;
         }
 
         .cover-header {
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             font-weight: 500;
             line-height: 1.4;
             letter-spacing: 2px;
@@ -79,7 +81,7 @@
         }
 
         .cover-title {
-            font-size: 2.8rem;
+            font-size: 2rem;
             font-weight: bold;
             margin-bottom: 20px;
             letter-spacing: 1px;
@@ -87,10 +89,43 @@
         }
 
         .cover-subtitle {
-            font-size: 1.05rem;
+            font-size: 0.9rem;
             opacity: 0.9;
             line-height: 1.6;
             letter-spacing: 1px;
+        }
+        
+        /* ==========================================
+           【新增】首頁中央旋轉圖案樣式
+           ========================================== */
+        .rotating-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 25px 0; /* 控制圖案與上下文字之間的距離 */
+        }
+
+        .rotating-logo {
+            /* 使用 clamp 確保圖案大小在不同手機螢幕上完美縮放（最小 120px，最大 180px） */
+            width: clamp(120px, 35vw, 180px);
+            height: clamp(120px, 35vw, 180px);
+            object-fit: contain;
+            
+            /* 核心旋轉動畫設定 */
+            animation: slow-rotate 25s linear infinite; 
+            
+            /* 加上一層柔和的霓虹發光或陰影（可選，若不需要可刪除此行） */
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); 
+        }
+
+        /* 定義旋轉動畫：從 0 度轉到 360 度 */
+        @keyframes slow-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .btn-start-game {
@@ -555,15 +590,18 @@
 <body>
 
 <div class="app-wrapper">
-    <div id="loadingView" class="loading-view">載入大千世界檔案中...</div>
+    <div id="loadingView" class="loading-view">🪐 載入大千世界檔案中...</div>
 
     <div id="coverView" class="cover-container" style="display: none;">
         <div class="cover-header">
-            失眠藥廣播劇<br>之
+            失眠藥廣播劇之
         </div>
         <div class="cover-main">
             <div class="cover-title">六度圈與Game</div>
-            <div class="cover-subtitle">連接劇中人物之間的鎖鏈<br>找出最短的社交路徑</div>
+            <div class="rotating-logo-container">
+                <img src="https://github.com/tldrkiki/mcu-6degrees-game/blob/main/spiral-pattern.png?raw=true" class="rotating-logo" alt="Logo">
+            </div>
+            <div class="cover-subtitle">連接劇中人物之間的鎖鏈<br>找出最短的社交距離</div>
         </div>
         <div>
             <button class="btn-start-game" onclick="switchToGameView()">
