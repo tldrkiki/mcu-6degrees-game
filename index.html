@@ -477,12 +477,22 @@
             margin-bottom: 12px;
         }
 
+        /* 【新增】專屬按鈕群容器：用 gap 強制所有按鈕不論怎麼顯示，間距一律完全平均 */
+        .success-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;          /* 您可以自由調整這個數值，控制按鈕與按鈕之間的固定高度間距 */
+            margin-top: 20px;   /* 讓按鏈群與上方的關係鎖鏈文字保持舒適的距離 */
+            width: 100%;
+        }
+
+        /* 【修改】優化單個按鈕樣式 */
         .btn-action {
             padding: 12px 20px;
             font-size: 0.95rem;
             border-radius: 50px;
             cursor: pointer;
-            margin: 6px 0;
+            /* margin: 6px 0;  <-- 【請把這行移除或註冊掉】，改由外層的 gap 來控制才不會衝突 */
             border: none;
             font-weight: bold;
             width: 100%;
@@ -599,9 +609,11 @@
             
             <div id="otherAnswersContainer" style="display: none;"></div>
             
-            <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">顯示其他最佳答案</button>
-            <button id="btnShareResult" class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
-            <button class="btn-action btn-restart" onclick="restartNewGame()">開新一局</button>
+            <div class="success-btn-group">
+                <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">顯示其他最佳答案</button>
+                <button id="btnShareResult" class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
+                <button class="btn-action btn-restart" onclick="restartNewGame()">開新一局</button>
+            </div>
         </div>
     </div>
 </div>
