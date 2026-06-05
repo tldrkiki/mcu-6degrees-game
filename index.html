@@ -156,11 +156,22 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px 20px 10px 20px;
+            padding: 0; /* 移除原本的 padding，改由內層子元件控制，以利精準分配比例 */
             box-sizing: border-box;
             overflow: hidden; 
             box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
-            position: relative; /* 供右下角懸浮按鈕做絕對定位 */
+            position: relative; 
+        }
+
+        /* 【修改】白色上半部區塊：固定佔 60% 高度 */
+        .white-section {
+            height: 60%;
+            display: flex;
+            flex-direction: column;
+            padding: 0px 20px 0px 20px;
+            box-sizing: border-box;
+            position: relative; /* 讓懸浮按鈕以此為定位基準 */
+            overflow: hidden;
         }
 
         /* 關係鎖鏈垂直鏈接區 */
@@ -168,16 +179,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            margin-bottom: 12px;
-            flex-shrink: 0;
+            gap: 7px;
+            margin-bottom: 0px;
+            flex: 1; /* 讓鎖鏈在白色區塊內自動伸縮分配 */
+            justify-content: center;
+            overflow: auto;
         }
 
         .node-box {
             width: 190px;
             background-color: var(--primary-purple);
             color: white;
-            padding: 10px 14px;
+            padding: 8px 14px;
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
@@ -211,7 +224,7 @@
             box-shadow: none;
             font-weight: normal;
             font-size: 0.85rem;
-            padding: 8px 14px;
+            padding: 6px 14px;
         }
 
         .node-arrow {
@@ -233,22 +246,22 @@
         }
 
         /* ==========================================
-           【懸浮功能按鈕群】精準固定在白色大卡片右下角內側
+           【懸浮功能按鈕群】精準固定在白色區塊的右下角
            ========================================== */
         .floating-actions {
             position: absolute;
-            right: 10px;
-            bottom: 40%; /* 避開下方藍色角色選擇面板的頂部位置 */
+            right: 15px;
+            bottom: 15px; /* 固定在白色區塊最底部之上 */
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
 
         /* 圓形按鈕優化排版，確保「查看答案」不超出 */
         .circle-btn {
-            width: 52px;
-            height: 52px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: #113160; 
             border: none;
@@ -260,7 +273,7 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.25);
             transition: all 0.2s ease;
-            font-size: 0.68rem; 
+            font-size: 0.65rem; 
             font-weight: bold;
             padding: 2px;
             text-align: center;
@@ -274,8 +287,8 @@
         }
 
         .circle-btn svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             fill: currentColor;
             margin-bottom: 2px;
         }
@@ -292,27 +305,31 @@
             display: none;
             flex-shrink: 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            right: 20px;
+            z-index: 15;
         }
 
         /* ==========================================
-           【下方角色選擇區】
+           【下方角色選擇區】固定佔 40% 高度
            ========================================== */
         .selection-panel {
             background-color: #5582be; 
-            margin: 0 -20px -15px -20px; 
-            padding: 12px 15px;
-            flex: 1;
+            height: 40%;
+            padding: 15px 20px 20px 20px;
             display: flex;
             flex-direction: column;
             overflow: hidden; 
-            z-index: 5;
+            box-sizing: border-box;
             border-radius: 0px 0px 40px 40px;
         }
 
         .selection-title {
             color: white;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
             font-weight: bold;
             flex-shrink: 0;
         }
@@ -353,7 +370,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 42px;
+            min-height: 45px;
             transition: all 0.2s ease;
         }
 
@@ -478,11 +495,6 @@
             .options-grid { grid-template-columns: repeat(2, 1fr); }
             .node-box { width: 140px; padding: 6px; font-size: 0.85rem; }
             .cover-title { font-size: 2.2rem; }
-            .floating-actions { 
-                bottom: auto;       /* 1. 先解除原本卡在卡片上方的底部定位 */
-                top: 78%;          /* 2. 改用 top（從頂部往下算）來強行壓低按鈕位置 */
-                right: 10px;        /* 3. 微調貼近右側邊緣，防止它移位 */
-    }
         }
     </style>
 </head>
@@ -508,33 +520,33 @@
     </div>
 
     <div id="gameView" class="game-container">
-        
         <div class="game-main-card">
-            <div class="floating-actions">
-                <button class="circle-btn" onclick="generateNewGame()" title="換一題">
-                    <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-                    <div>換一題</div>
-                </button>
-                <button class="circle-btn" onclick="triggerGameHint()" title="獲取提示">
-                    <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg>
-                    <div>提示</div>
-                </button>
-                <button class="circle-btn" onclick="showAnswersView()" title="查看答案">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
-                    <div>查看</div><div>答案</div>
-                </button>
-            </div>
+            
+            <div class="white-section">
+                <div id="hintDisplayBox" class="game-hint-box"></div>
 
-            <div id="hintDisplayBox" class="game-hint-box"></div>
+                <div class="vertical-path-container" id="verticalPathContainer"></div>
 
-            <div class="vertical-path-container" id="verticalPathContainer">
+                <div class="floating-actions">
+                    <button class="circle-btn" onclick="generateNewGame()" title="換一題">
+                        <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        <div>換一題</div>
+                    </button>
+                    <button class="circle-btn" onclick="triggerGameHint()" title="獲取提示">
+                        <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg>
+                        <div>提示</div>
+                    </button>
+                    <button class="circle-btn" onclick="showAnswersView()" title="查看答案">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                        <div>查看</div><div>答案</div>
+                    </button>
                 </div>
+            </div>
 
             <div class="selection-panel">
                 <div class="selection-title" id="selectionTitle">請選擇下一位連結角色：</div>
                 <div class="options-scroll-area">
-                    <div class="options-grid" id="optionsGrid">
-                        </div>
+                    <div class="options-grid" id="optionsGrid"></div>
                 </div>
             </div>
         </div>
@@ -689,6 +701,10 @@
         renderGameEngine();
     }
 
+    function generateNewGame() {
+        initGameData();
+    }
+
     function findAllShortestPaths(start, end) {
         if (!matrixData[start] || !matrixData[end]) return [];
         let queue = [[start]];
@@ -734,11 +750,10 @@
             return;
         }
 
-        // --- 動態渲染中央關係鏈 (起點方格 + 5個中間人方格 + 終點方格) ---
+        // --- 動態渲染中央關係鏈 ---
         const pathContainer = document.getElementById('verticalPathContainer');
         let pathHtml = '';
 
-        // 1. 渲染頂部「0度起點」方格（加入縮小版備註）
         const startRemark = remarksMap[gameState.startChar] ? `<span class="sub-remark" style="color: #e0e4f5; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.startChar]}</span>` : '';
         pathHtml += `
             <div id="startLabelOuter" class="game-outer-label-top">0度起點</div>
@@ -749,10 +764,8 @@
             <div class="node-arrow">↓</div>
         `;
 
-        // 2. 渲染中間 5 個連結角色方格
         for (let i = 1; i <= 5; i++) {
             if (gameState.currentPath[i] && gameState.currentPath[i] !== gameState.endChar) {
-                // 已填入的中間人（加入縮小版備註）
                 const midChar = gameState.currentPath[i];
                 const midRemark = remarksMap[midChar] ? `<span class="sub-remark" style="color: #e0e4f5; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[midChar]}</span>` : '';
                 pathHtml += `
@@ -762,7 +775,6 @@
                     </div>
                 `;
             } else {
-                // 空白方格
                 pathHtml += `
                     <div class="node-box empty">&nbsp;</div>
                 `;
@@ -770,7 +782,6 @@
             pathHtml += `<div class="node-arrow">↓</div>`;
         }
 
-        // 3. 渲染底部「6度終點」方格（加入縮小版備註）
         const endRemark = remarksMap[gameState.endChar] ? `<span class="sub-remark" style="color: #ffcdd2; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.endChar]}</span>` : '';
         pathHtml += `
             <div class="node-box end-node" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -788,17 +799,10 @@
         
         titleEl.innerText = `請選擇「${currentCharacter}」認識的角色`;
 
-        // 獲取目前角色認識的所有人
         const acquaintances = matrixData[currentCharacter] || [];
 
-        // 【修改核心邏輯】
-        // 當 connectionsCount 達到 maxSteps - 1 (即 5 個中間人填滿時)
         if (connectionsCount >= gameState.maxSteps - 1) {
-            // 檢查這個第5中間人的熟人名單裡，有沒有包含終點
-            if (acquaintances.includes(gameState.endChar)) {
-                // 正確的情況：不做攔截跳出，直接讓它流向下方的正常渲染，顯示全部認識的角色
-            } else {
-                // 錯誤的情況：顯示失敗警告
+            if (!acquaintances.includes(gameState.endChar)) {
                 gridEl.innerHTML = `
                     <div class="empty-notice">
                         ⚠️ 已達到中間人數量上限！未能成功連接終點。<br>
@@ -809,15 +813,12 @@
             }
         }
 
-        // 正常渲染邏輯（包含滿 5 個中間人且正確時，會走這裡列出所有人）
         if (acquaintances.length === 0) {
             gridEl.innerHTML = `<div class="empty-notice">此角色在當前宇宙中無向下延展的關係，請點選上方鎖鏈回溯。</div>`;
         } else {
             let gridHtml = '';
             acquaintances.forEach(name => {
                 const remarkText = remarksMap[name] ? `<span class="sub-remark">${remarksMap[name]}</span>` : '';
-                
-                // 這裡已經刪除了 specialStyle 和 prefix，讓終點角色與普通角色完全相同
                 gridHtml += `
                     <button class="btn-option" onclick="handleSelectCharacter('${name}')">
                         <span>${name}</span>
@@ -872,11 +873,11 @@
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
-        const btnShareResult = document.getElementById('btnShareResult'); // 取得分享按鈕
+        const btnShareResult = document.getElementById('btnShareResult');
 
         titleEl.innerText = "🔮 正確答案揭曉";
         btnShowOthers.style.display = 'none';
-        if (btnShareResult) btnShareResult.style.display = 'none'; // 隱藏複製鏈結分享按鈕
+        if (btnShareResult) btnShareResult.style.display = 'none';
         container.style.display = 'block';
 
         if (paths.length === 0) {
@@ -917,7 +918,6 @@
         document.getElementById('otherAnswersContainer').style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'block'; 
         
-        // 正確保留：只有當這題有 2 組以上的最佳解法時，才顯示「顯示其他最佳答案」按鈕
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
         if (allPaths.length > 1) {
             btnShowOthers.style.display = 'block';
