@@ -196,12 +196,12 @@
             background-color: var(--primary-purple);
             color: white;
             /* 【修正】內邊距改用 vh 動態計算，高度不夠時自動變薄（最小 3px，最大 8px） */
-            padding: clamp(3px, 1vh, 8px) 10px; 
+            padding: clamp(1px, 1vh, 8px) 10px; 
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
             /* 【修正】核心邏輯：字型大小隨螢幕高度變動！最小 0.7rem，最大 0.95rem */
-            font-size: clamp(0.7rem, 2.2vh, 0.95rem); 
+            font-size: clamp(0.6rem, 2.2vh, 0.95rem); 
             box-shadow: 0 3px 8px rgba(121, 134, 203, 0.3);
             cursor: pointer;
             transition: transform 0.2s, font-size 0.2s;
