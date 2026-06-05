@@ -19,7 +19,7 @@
             --card-bg: #ffffff;          /* 純白質感卡片背景 */
             --text-dark: #333333;        /* 內文深色字 */
             --text-light: #ffffff;       /* 白色文字 */
-            --success-color: #2ecc71;
+            --success-color: #91B422;
             --warning-color: #f59e0b;
         }
 
@@ -201,7 +201,7 @@
             text-align: center;
             font-weight: bold;
             /* 【修正】核心邏輯：字型大小隨螢幕高度變動！最小 0.7rem，最大 0.95rem */
-            font-size: clamp(0.6rem, 2.2vh, 0.95rem); 
+            font-size: clamp(0.6rem, 2.2vh, 1rem); 
             box-shadow: 0 3px 8px rgba(121, 134, 203, 0.3);
             cursor: pointer;
             transition: transform 0.2s, font-size 0.2s;
@@ -251,7 +251,7 @@
         }
         /* 【修改】角色備註小字：隨方格高度同步極小化，防止擠開空間 */
         .node-box .sub-remark {
-            font-size: clamp(0.3rem, 1.5vh, 0.6rem) !important;
+            font-size: clamp(0.3rem, 1.5vh, 0.7rem) !important;
             line-height: 1;
             margin-top: 1px;
             font-weight: normal;
@@ -862,9 +862,8 @@
             if (!acquaintances.includes(gameState.endChar)) {
                 gridEl.innerHTML = `
                     <div class="empty-notice">
-                        ⚠️ 已達到中間人數量上限！未能成功連接終點。<br>
-                        請點擊上方已選方格退回重選，<br>
-                        或點擊右側功能鈕查看答案。
+                        未能成功連接終點<br>
+                        請點擊上方已選方格後退重選<br>
                     </div>`;
                 return;
             }
@@ -918,19 +917,19 @@
             }
     
             if (currentCharacter === gameState.endChar) {
-                hintBox.innerHTML = `🎉 您已經抵達終點！`;
+                hintBox.innerHTML = `你已經抵達終點！`;
                 hintBox.style.display = 'block';
                 return;
             }
     
             let paths = findAllShortestPaths(currentCharacter, gameState.endChar);
             if (paths.length === 0 || (paths[0].length - 1) > remainingSteps) {
-                hintBox.innerHTML = `⚠️ <strong>提示：</strong> 當前路徑在剩餘步數內無解，建議點選上方鎖鏈返回重選。`;
+                hintBox.innerHTML = `<strong>提示：</strong> 當前選擇無解，請點擊上方已選方格後退重選`;
                 hintBox.style.display = 'block';
             } else {
                 let randomPath = paths[Math.floor(Math.random() * paths.length)];
                 let nextCharHint = randomPath[1]; 
-                hintBox.innerHTML = `💡 <strong>過關提示：</strong> 推薦下一個連接：【 <strong>${nextCharHint}</strong> 】`;
+                hintBox.innerHTML = `💡 <strong>提示：</strong> 推薦連接角色為【 <strong>${nextCharHint}</strong> 】`;
                 hintBox.style.display = 'block';
             }
     
@@ -949,7 +948,7 @@
         const btnShowOthers = document.getElementById('btnShowOthers');
         const btnShareResult = document.getElementById('btnShareResult');
 
-        titleEl.innerText = "🔮 正確答案揭曉";
+        titleEl.innerText = "正確答案揭曉";
         btnShowOthers.style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'none';
         container.style.display = 'block';
@@ -959,7 +958,7 @@
             container.innerHTML = '';
         } else {
             const steps = paths[0].length - 2;
-            detailsEl.innerHTML = `最少僅需 <strong>${steps}</strong> 個中間人，共找到 ${paths.length} 組最佳解：`;
+            detailsEl.innerHTML = `最少僅需 <strong>${steps}</strong> 個中間人，共找到 ${paths.length} 組最佳解法：`;
             
             let html = '';
             paths.forEach((path, idx) => {
@@ -987,10 +986,10 @@
         const btnShowOthers = document.getElementById('btnShowOthers');
         const btnShareResult = document.getElementById('btnShareResult'); 
         
-        titleEl.innerText = "🎉 連結成功！";
+        titleEl.innerText = "連結成功";
         
         // 【修改】將過關訊息內容改為您指定的格式，並使用 <br> 來達成網頁上的換行
-        detailsEl.innerHTML = `恭喜你成功使用了 ${steps} 個連接角色過關！<br><br>⛓️ 關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
+        detailsEl.innerHTML = `恭喜你成功使用 ${steps} 個連接角色過關<br><br>⛓️ 關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'block'; 
@@ -1015,7 +1014,7 @@
         allPaths.forEach((path, idx) => {
             html += `
                 <div class="answer-block">
-                    <div style="font-size:0.7rem; color:var(--warning-color); font-weight:bold; margin-bottom:4px;">組合 #${idx+1}</div>
+                    <div style="font-size:0.7rem; color:var(--warning-color); font-weight:bold; margin-bottom:4px;">解法 #${idx+1}</div>
                     <div class="answer-path-row">
             `;
             path.forEach((char, cIdx) => {
@@ -1034,12 +1033,12 @@
     function copyResultToClipboard() {
         const steps = gameState.currentPath.length - 2;
         const pathString = gameState.currentPath.join(' ➔ ');
-        const shareText = `🪐失眠藥廣播劇之六度圈與Game🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩 成功使用了 ${steps} 個連接角色過關！\n\n⛓️ 關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥宇宙的熟悉度吧！\n遊戲連結：https://mcu-6degrees-game.vercel.app/`;
+        const shareText = `🪐失眠藥廣播劇之六度圈與Game🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩成功使用 ${steps} 個連接角色過關！\n\n⛓️ 關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥廣播劇宇宙的熟悉度吧！\n遊戲連結：https://mcu-6degrees-game.vercel.app/`;
         
         navigator.clipboard.writeText(shareText).then(() => {
             alert('複製成功！快去分享給其他鎮民吧！');
         }).catch(() => {
-            alert('複製失敗，可以直接截圖分享喔！');
+            alert('複製失敗，建議直接截圖分享');
         });
     }
 
