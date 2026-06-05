@@ -196,7 +196,7 @@
             background-color: var(--primary-purple);
             color: white;
             /* 【修正】內邊距改用 vh 動態計算，高度不夠時自動變薄（最小 3px，最大 8px） */
-            padding: clamp(1px, 1vh, 8px) 10px; 
+            padding: clamp(1px, o.7vh, 8px) 10px; 
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
@@ -211,7 +211,7 @@
             /* 【修正】強大彈性縮放：最大高度隨螢幕高度動態增減，徹底防爆 */
             flex: 1; 
             min-height: 0; /* 允許 flex 子元件縮小到比內容還小，防止撐開 */
-            max-height: clamp(30px, 5.5vh, 45px); 
+            max-height: clamp(30px, 6.5vh, 50px); 
             
             display: flex;
             flex-direction: column;
@@ -246,14 +246,16 @@
 
         /* 【修改】角色備註小字：隨方格高度同步極小化，防止擠開空間 */
         .node-box .sub-remark {
-            font-size: clamp(0.3rem, 1.4vh, 0.65rem) !important;
+            font-size: clamp(0.3rem, 1.5vh, 0.7rem) !important;
             line-height: 1;
             margin-top: 1px;
             font-weight: normal;
             white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
             text-overflow: ellipsis; /* 如果字太長自動顯示 ... */
             max-width: 95%;
+            display: block;
         }
 
         /* 【修改】箭頭尺寸也隨螢幕高度等比例縮小 */
