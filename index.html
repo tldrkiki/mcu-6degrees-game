@@ -168,7 +168,7 @@
             height: 65%;
             display: flex;
             flex-direction: column;
-            padding: 15px 10px 15px 10px; /* 【修正】右邊加大 padding (75px) 幫懸浮按鈕留出專屬空間，防止內容重疊 */
+            padding: 10px 10px 10px 10px; /* 【修正】右邊加大 padding (75px) 幫懸浮按鈕留出專屬空間，防止內容重疊 */
             box-sizing: border-box;
             position: relative; 
             overflow: hidden;
@@ -196,7 +196,7 @@
             background-color: var(--primary-purple);
             color: white;
             /* 【修正】內邊距改用 vh 動態計算，高度不夠時自動變薄（最小 3px，最大 8px） */
-            padding: clamp(2px, 0.7vh, 8px) 10px; 
+            padding: clamp(2px, 0.8vh, 8px) 10px; 
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
@@ -251,14 +251,13 @@
         }
         /* 【修改】角色備註小字：隨方格高度同步極小化，防止擠開空間 */
         .node-box .sub-remark {
-            font-size: clamp(0.3rem, 1vh, 0.6rem) !important;
+            font-size: clamp(0.3rem, 1.5vh, 0.6rem) !important;
             line-height: 1;
             margin-top: 1px;
             font-weight: normal;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-overflow: ellipsis; /* 如果字太長自動顯示 ... */
             max-width: 95%;
             display: block;
         }
