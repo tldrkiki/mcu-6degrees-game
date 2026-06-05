@@ -196,7 +196,7 @@
             background-color: var(--primary-purple);
             color: white;
             /* 【修正】內邊距改用 vh 動態計算，高度不夠時自動變薄（最小 3px，最大 8px） */
-            padding: clamp(2px, 0.8vh, 8px) 10px; 
+            padding: clamp(2px, 0.7vh, 8px) 10px; 
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
@@ -251,7 +251,7 @@
         }
         /* 【修改】角色備註小字：隨方格高度同步極小化，防止擠開空間 */
         .node-box .sub-remark {
-            font-size: clamp(0.3rem, 1.5vh, 0.6rem) !important;
+            font-size: clamp(0.3rem, 1vh, 0.6rem) !important;
             line-height: 1;
             margin-top: 1px;
             font-weight: normal;
@@ -266,7 +266,7 @@
         /* 【修改】箭頭尺寸也隨螢幕高度等比例縮小 */
         .node-arrow {
             color: #cbd5e1;
-            font-size: clamp(0.5rem, 1.8vh, 0.8rem); /* 【修正】高度矮時箭頭變小 */
+            font-size: clamp(0.5rem, 1.5vh, 0.8rem); /* 【修正】高度矮時箭頭變小 */
             line-height: 1;
             margin: 0;
             padding: 0;
