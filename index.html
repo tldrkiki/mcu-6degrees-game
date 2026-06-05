@@ -78,7 +78,7 @@
 
         .cover-main {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .cover-title {
@@ -237,7 +237,7 @@
             text-align: center;
             font-weight: bold;
             /* 【修正】核心邏輯：字型大小隨螢幕高度變動！最小 0.7rem，最大 0.95rem */
-            font-size: clamp(0.6rem, 2.2vh, 1rem); 
+            font-size: clamp(0.6rem, 2vh, 1rem); 
             box-shadow: 0 3px 8px rgba(121, 134, 203, 0.3);
             cursor: pointer;
             transition: transform 0.2s, font-size 0.2s;
@@ -289,7 +289,7 @@
         .node-box .sub-remark {
             font-size: clamp(0.3rem, 1.5vh, 0.7rem) !important;
             line-height: 1;
-            margin-top: 1px;
+            margin-top: 0px;
             font-weight: normal;
             white-space: nowrap;
             overflow: hidden;
@@ -1023,10 +1023,10 @@
         const btnShowOthers = document.getElementById('btnShowOthers');
         const btnShareResult = document.getElementById('btnShareResult'); 
         
-        titleEl.innerText = "連結成功";
+        titleEl.innerText = "連結成功！";
         
         // 【修改】將過關訊息內容改為您指定的格式，並使用 <br> 來達成網頁上的換行
-        detailsEl.innerHTML = `恭喜你成功使用 ${steps} 個連接角色過關<br><br>⛓️ 關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
+        detailsEl.innerHTML = `恭喜你成功使用 ${steps} 個連接角色過關！<br><br>⛓️ 關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'block'; 
