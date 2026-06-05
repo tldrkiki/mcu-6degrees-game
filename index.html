@@ -196,7 +196,7 @@
             background-color: var(--primary-purple);
             color: white;
             /* 【修正】內邊距改用 vh 動態計算，高度不夠時自動變薄（最小 3px，最大 8px） */
-            padding: clamp(2px, o.7vh, 8px) 10px; 
+            padding: clamp(2px, 0.7vh, 8px) 10px; 
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
@@ -232,7 +232,7 @@
             box-shadow: 0 3px 8px rgba(229, 115, 115, 0.3);
         }
 
-        /* 尚未解鎖的空方格 */
+        /* 【修改】尚未解鎖的空方格：強制維持與普通方格完全一致的尺寸與縮放彈性 */
         .node-box.empty {
             background-color: transparent;
             border: 2px solid #cbd5e1;
@@ -240,10 +240,15 @@
             cursor: default;
             box-shadow: none;
             font-weight: normal;
-            font-size: clamp(0.65rem, 2vh, 0.85rem); /* 【修正】空方格字型同步縮放 */
-            padding: clamp(3px, 1vh, 8px) 14px;
+            font-size: clamp(0.7rem, 2.2vh, 0.95rem); /* 保持與普通方格相同的動態字級大小範圍 */
+            
+            /* 【修正】內邊距、高度限制與彈性完全同步，確保視覺大小 100% 一致 */
+            padding: clamp(4px, 0.8vh, 8px) 10px; 
+            flex: 1; 
+            min-height: 34px; 
+            max-height: clamp(34px, 6.5vh, 52px); 
+            box-sizing: border-box;
         }
-
         /* 【修改】角色備註小字：隨方格高度同步極小化，防止擠開空間 */
         .node-box .sub-remark {
             font-size: clamp(0.3rem, 1.5vh, 0.6rem) !important;
