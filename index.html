@@ -163,43 +163,51 @@
             position: relative; 
         }
 
-        /* 【修改】白色上半部區塊：固定佔 60% 高度 */
+        /* 【修改】白色上半部區塊：固定佔 65% 高度，並確保內部元素不會溢出 */
         .white-section {
             height: 65%;
             display: flex;
             flex-direction: column;
-            padding: 0px 20px 0px 20px;
+            padding: 15px 10px 15px 10px; /* 【修正】右邊加大 padding (75px) 幫懸浮按鈕留出專屬空間，防止內容重疊 */
             box-sizing: border-box;
-            position: relative; /* 讓懸浮按鈕以此為定位基準 */
+            position: relative; 
             overflow: hidden;
         }
 
-        /* 關係鎖鏈垂直鏈接區 */
+        /* 【修改】關係鎖鏈垂直鏈接區：完美適應剩餘空間 */
         .vertical-path-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 7px;
+            gap: 2px; /* 【修正】縮小間距，確保 5 個格子能完美擠入畫面上半部 */
             margin-bottom: 0px;
-            flex: 1; /* 讓鎖鏈在白色區塊內自動伸縮分配 */
-            justify-content: center;
-            overflow: auto;
+            flex: 1; 
+            justify-content: space-between; /* 【修正】改用等距分佈，讓起點到終點剛好撐滿白色區塊 */
+            overflow: hidden; /* 【修正】防止出現滾動條，強迫內容適應高度 */
+            width: 100%;
         }
 
+        /* 【修改】答題方格樣式 */
         .node-box {
-            width: 190px;
+            width: 100%; /* 【修正】改為 100% 寬度配合外層控制，不再寫死 190px */
+            max-width: 180px; /* 【修正】限制最大寬度，保持視覺美觀 */
             background-color: var(--primary-purple);
             color: white;
-            padding: 8px 14px;
+            padding: 6px 10px; /* 【修正】稍微減少 padding 壓縮高度 */
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.9rem; /* 【修正】略微縮小字體 */
             box-shadow: 0 3px 8px rgba(121, 134, 203, 0.3);
             cursor: pointer;
             transition: transform 0.2s;
             border: 1px solid transparent;
             word-break: break-all;
+            flex: 1; /* 【新增】允許格子在極端高度下自動微調缩放 */
+            max-height: 42px; /* 【新增】限制最大高度，避免長文字撐開 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .node-box:hover {
@@ -227,10 +235,14 @@
             padding: 6px 14px;
         }
 
+        /* 【修改】減少箭頭所佔的高度空間 */
         .node-arrow {
             color: #cbd5e1;
-            font-size: 0.85rem;
+            font-size: 0.75rem; 
             line-height: 1;
+            margin: 0;
+            padding: 0;
+            flex-shrink: 0;
         }
 
         /* 6度終點標題：配合主調，置於白方格正下方外側 */
@@ -250,18 +262,19 @@
            ========================================== */
         .floating-actions {
             position: absolute;
-            right: 15px;
-            bottom: 15px; /* 固定在白色區塊最底部之上 */
+            right: 12px;
+            bottom: 15px; 
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 1.5vh; /* 【修改】按鈕之間的間距隨螢幕高度動態調整 */
             z-index: 10;
         }
 
-        /* 圓形按鈕優化排版，確保「查看答案」不超出 */
+        /* 圓形按鈕優化排版，確保隨瀏覽器大小動態縮小 */
         .circle-btn {
-            width: 50px;
-            height: 50px;
+            /* 【修改】使用 clamp 讓按鈕寬高在 38px 到 52px 之間隨螢幕寬度(vw)或高度(vh)動態縮放 */
+            width: clamp(38px, 11vw, 52px);
+            height: clamp(38px, 11vw, 52px);
             border-radius: 50%;
             background-color: #113160; 
             border: none;
@@ -273,12 +286,14 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.25);
             transition: all 0.2s ease;
-            font-size: 0.65rem; 
+            /* 【修改】字體大小也隨按鈕同步縮放，確保文字不會溢出 */
+            font-size: clamp(0.5rem, 2.2vw, 0.65rem); 
             font-weight: bold;
-            padding: 2px;
+            padding: 4px;
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.1;
             box-sizing: border-box;
+            flex-shrink: 0; /* 防止按鈕被外層擠壓變形 */
         }
 
         .circle-btn:hover {
@@ -286,11 +301,13 @@
             background-color: #1a427a;
         }
 
+        /* 【修改】裡面的 SVG 圖標大小也必須跟著按鈕一起縮放 */
         .circle-btn svg {
-            width: 15px;
-            height: 15px;
+            width: clamp(12px, 3.5vw, 16px);
+            height: clamp(12px, 3.5vw, 16px);
             fill: currentColor;
             margin-bottom: 2px;
+            flex-shrink: 0;
         }
 
         /* 提示文字盒 */
@@ -578,6 +595,7 @@
     let characterList = []; 
     let remarksMap = {};    
     let matrixData = {};    
+    let hintTimeout = null; // 【新增】用來記錄提示方格的定時器
     
     let gameState = {
         startChar: '',
@@ -839,33 +857,50 @@
         if (index === 0 && gameState.currentPath.length === 1) return;
         if (index >= gameState.currentPath.length) return;
         gameState.currentPath = gameState.currentPath.slice(0, index + 1);
+        
+        // 【優化】回溯時如果提示還在倒數，立刻清除並隱藏
+        if (hintTimeout) {
+            clearTimeout(hintTimeout);
+            hintTimeout = null;
+        }
         document.getElementById('hintDisplayBox').style.display = 'none';
+        
         renderGameEngine();
     }
 
     function triggerGameHint() {
-        const hintBox = document.getElementById('hintDisplayBox');
-        const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
-        const remainingSteps = gameState.maxSteps - (gameState.currentPath.length - 1);
-
-        if (currentCharacter === gameState.endChar) {
-            hintBox.innerHTML = `🎉 您已經抵達終點！`;
-            hintBox.style.display = 'block';
-            return;
+            const hintBox = document.getElementById('hintDisplayBox');
+            const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
+            const remainingSteps = gameState.maxSteps - (gameState.currentPath.length - 1);
+    
+            // 【新增】如果之前已經有在倒數的定時器，先清除它，重新計算 5 秒
+            if (hintTimeout) {
+                clearTimeout(hintTimeout);
+            }
+    
+            if (currentCharacter === gameState.endChar) {
+                hintBox.innerHTML = `🎉 您已經抵達終點！`;
+                hintBox.style.display = 'block';
+                return;
+            }
+    
+            let paths = findAllShortestPaths(currentCharacter, gameState.endChar);
+            if (paths.length === 0 || (paths[0].length - 1) > remainingSteps) {
+                hintBox.innerHTML = `⚠️ <strong>提示：</strong> 當前路徑在剩餘步數內無解，建議點選上方鎖鏈返回重選。`;
+                hintBox.style.display = 'block';
+            } else {
+                let randomPath = paths[Math.floor(Math.random() * paths.length)];
+                let nextCharHint = randomPath[1]; 
+                hintBox.innerHTML = `💡 <strong>過關提示：</strong> 推薦下一個連接：【 <strong>${nextCharHint}</strong> 】`;
+                hintBox.style.display = 'block';
+            }
+    
+            // 【新增】設定 5000 毫秒（5秒）後將方格收起來
+            hintTimeout = setTimeout(() => {
+                hintBox.style.display = 'none';
+                hintTimeout = null; // 隱藏後清空紀錄
+            }, 5000);
         }
-
-        let paths = findAllShortestPaths(currentCharacter, gameState.endChar);
-        if (paths.length === 0 || (paths[0].length - 1) > remainingSteps) {
-            hintBox.innerHTML = `⚠️ <strong>提示：</strong> 當前路徑在剩餘步數內無解，建議點選上方鎖鏈返回重選。`;
-            hintBox.style.display = 'block';
-            return;
-        }
-
-        let randomPath = paths[Math.floor(Math.random() * paths.length)];
-        let nextCharHint = randomPath[1]; 
-        hintBox.innerHTML = `💡 <strong>過關提示：</strong> 推薦下一個連接：【 <strong>${nextCharHint}</strong> 】`;
-        hintBox.style.display = 'block';
-    }
 
     function showAnswersView() {
         const paths = findAllShortestPaths(gameState.startChar, gameState.endChar);
