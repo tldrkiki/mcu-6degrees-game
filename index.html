@@ -905,14 +905,15 @@
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
-        const btnShareResult = document.getElementById('btnShareResult'); // 取得分享按鈕
+        const btnShareResult = document.getElementById('btnShareResult'); 
         
         titleEl.innerText = "🎉 連結成功！";
         detailsEl.innerHTML = `恭喜！你成功用 <strong>${steps}</strong> 個中間角色，將「<strong>${gameState.startChar}</strong>」與「<strong>${gameState.endChar}</strong>」連結在一起！`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
-        if (btnShareResult) btnShareResult.style.display = 'block'; // 玩家正常通關，顯示分享按鈕
+        if (btnShareResult) btnShareResult.style.display = 'block'; 
         
+        // 正確保留：只有當這題有 2 組以上的最佳解法時，才顯示「顯示其他最佳答案」按鈕
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
         if (allPaths.length > 1) {
             btnShowOthers.style.display = 'block';
