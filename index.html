@@ -492,8 +492,8 @@
 
         .btn-action:hover { transform: translateY(-1px); }
         .btn-restart { background: var(--primary-purple); color: white; }
-        .btn-share { background: #5582be; color: white; }
-        .btn-show-others { background: #9fa8da; color: white; }
+        .btn-share { background: #9fa8da ; color: white; }
+        .btn-show-others { background: #5582be; color: white; }
 
         .answer-block {
             margin-top: 10px;
@@ -599,9 +599,9 @@
             
             <div id="otherAnswersContainer" style="display: none;"></div>
             
-            <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">🔍 顯示其他最佳答案</button>
+            <button id="btnShowOthers" class="btn-action btn-show-others" style="display: none;" onclick="displayAlternativeAnswers()">顯示其他最佳答案</button>
             <button id="btnShareResult" class="btn-action btn-share" onclick="copyResultToClipboard()">複製鏈結分享</button>
-            <button class="btn-action btn-restart" onclick="restartNewGame()">再玩一次</button>
+            <button class="btn-action btn-restart" onclick="restartNewGame()">開新一局</button>
         </div>
     </div>
 </div>
@@ -963,13 +963,16 @@
 
     function showSuccessPopup() {
         const steps = gameState.currentPath.length - 2; 
+        const pathString = gameState.currentPath.join(' ➔ '); // 【新增】將陣列轉為以 ➔ 連結的字串
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
         const btnShareResult = document.getElementById('btnShareResult'); 
         
         titleEl.innerText = "🎉 連結成功！";
-        detailsEl.innerHTML = `恭喜！你成功用 <strong>${steps}</strong> 個中間角色，將「<strong>${gameState.startChar}</strong>」與「<strong>${gameState.endChar}</strong>」連結在一起！`;
+        
+        // 【修改】將過關訊息內容改為您指定的格式，並使用 <br> 來達成網頁上的換行
+        detailsEl.innerHTML = `恭喜你成功使用了 ${steps} 個連接角色過關！<br><br>⛓️ 關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'block'; 
@@ -1013,7 +1016,7 @@
     function copyResultToClipboard() {
         const steps = gameState.currentPath.length - 2;
         const pathString = gameState.currentPath.join(' ➔ ');
-        const shareText = `🪐 失眠藥廣播劇之六度圈與Game 🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩 成功使用了 ${steps} 個中間角色過關！\n\n⛓️ 關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥宇宙的角色熟悉度吧！`;
+        const shareText = `🪐失眠藥廣播劇之六度圈與Game🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩 成功使用了 ${steps} 個連接角色過關！\n\n⛓️ 關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥宇宙的熟悉度吧！\n遊戲連結：https://mcu-6degrees-game.vercel.app/`;
         
         navigator.clipboard.writeText(shareText).then(() => {
             alert('複製成功！快去分享給其他鎮民吧！');
