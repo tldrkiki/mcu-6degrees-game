@@ -812,18 +812,20 @@
             let gridHtml = '';
             acquaintances.forEach(name => {
                 const remarkText = remarksMap[name] ? `<span class="sub-remark">${remarksMap[name]}</span>` : '';
+                // 如果該名單中有終點角色，我們幫它單獨加個醒目的邊框（可選，如不想要特殊邊框可以移除 style）
+                const specialStyle = (name === gameState.endChar) ? 'style="border-color: #e57373; color: #e57373;"' : '';
+                const prefix = (name === gameState.endChar) ? '🎯 ' : '';
                 
-                // 這裡已經刪除了 specialStyle 和 prefix，讓終點角色與普通角色完全相同
                 gridHtml += `
-                    <button class="btn-option" onclick="handleSelectCharacter('${name}')">
-                        <span>${name}</span>
+                    <button class="btn-option" ${specialStyle} onclick="handleSelectCharacter('${name}')">
+                        <span>${prefix}${name}</span>
                         ${remarkText}
                     </button>
                 `;
             });
             gridEl.innerHTML = gridHtml;
         }
-
+    }
     function handleSelectCharacter(name) {
         gameState.currentPath.push(name);
         renderGameEngine();
