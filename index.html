@@ -734,8 +734,8 @@
         const pathContainer = document.getElementById('verticalPathContainer');
         let pathHtml = '';
 
-        // 1. 渲染頂部「0度起點」方格（加入備註）
-        const startRemark = remarksMap[gameState.startChar] ? `<span class="sub-remark" style="color: #e0e4f5;">${remarksMap[gameState.startChar]}</span>` : '';
+        // 1. 渲染頂部「0度起點」方格（加入縮小版備註）
+        const startRemark = remarksMap[gameState.startChar] ? `<span class="sub-remark" style="color: #e0e4f5; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.startChar]}</span>` : '';
         pathHtml += `
             <div id="startLabelOuter" class="game-outer-label-top">0度起點</div>
             <div class="node-box start-node" onclick="handleRollback(0)" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -748,9 +748,9 @@
         // 2. 渲染中間 5 個連結角色方格
         for (let i = 1; i <= 5; i++) {
             if (gameState.currentPath[i] && gameState.currentPath[i] !== gameState.endChar) {
-                // 已填入的中間人（加入備註）
+                // 已填入的中間人（加入縮小版備註）
                 const midChar = gameState.currentPath[i];
-                const midRemark = remarksMap[midChar] ? `<span class="sub-remark" style="color: #e0e4f5;">${remarksMap[midChar]}</span>` : '';
+                const midRemark = remarksMap[midChar] ? `<span class="sub-remark" style="color: #e0e4f5; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[midChar]}</span>` : '';
                 pathHtml += `
                     <div class="node-box" onclick="handleRollback(${i})" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                         <span>${midChar}</span>
@@ -766,8 +766,8 @@
             pathHtml += `<div class="node-arrow">↓</div>`;
         }
 
-        // 3. 渲染底部「6度終點」方格（加入備註）
-        const endRemark = remarksMap[gameState.endChar] ? `<span class="sub-remark" style="color: #ffcdd2;">${remarksMap[gameState.endChar]}</span>` : '';
+        // 3. 渲染底部「6度終點」方格（加入縮小版備註）
+        const endRemark = remarksMap[gameState.endChar] ? `<span class="sub-remark" style="color: #ffcdd2; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.endChar]}</span>` : '';
         pathHtml += `
             <div class="node-box end-node" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <span>${gameState.endChar}</span>
