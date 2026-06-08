@@ -8,18 +8,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta property="og:type" content="website" />
     <meta property="og:title" content="失眠藥廣播劇之六度圈與Game" />
-    <meta property="og:description" content="為各個廣播劇角色於大千世界找出他們的六度圈連結" />
+    <meta property="og:description" content="連接劇中人物之間的鎖鏈 找出最短的社交距離" />
     <meta property="og:image" content="https://github.com/kikiwoo702/mcu-6degrees-game/blob/main/6degrees-game.png?raw=true" />
     <meta property="og:url" content="https://mcu-6degrees-game.vercel.app/" />
     <title>失眠藥廣播劇之六度圈與Game</title>
     <link href="hhttps://fonts.googleapis.com/css?family=Noto Sans TC" rel="stylesheet">
     <style>
         :root {
-            --primary-purple: #7986cb;   /* 主色調藍紫 */
-            --light-purple: #9fa8da;     /* 邊框與淡色文字 */
-            --card-bg: #ffffff;          /* 純白質感卡片背景 */
-            --text-dark: #333333;        /* 內文深色字 */
-            --text-light: #ffffff;       /* 白色文字 */
+            --primary-purple: #7986cb;   
+            --light-purple: #9fa8da;     
+            --card-bg: #ffffff;        
+            --text-dark: #333333;      
+            --text-light: #ffffff;   
             --success-color: #91B422;
             --warning-color: #f59e0b;
         }
@@ -96,30 +96,24 @@
             letter-spacing: 1px;
         }
         
-        /* ==========================================
-           【新增】首頁中央旋轉圖案樣式
-           ========================================== */
+
         .rotating-logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 35px 0; /* 控制圖案與上下文字之間的距離 */
+            margin: 35px 0; 
         }
 
         .rotating-logo {
-            /* 使用 clamp 確保圖案大小在不同手機螢幕上完美縮放（最小 120px，最大 180px） */
             width: clamp(120px, 50vw, 250px);
             height: clamp(120px, 50vw, 250px);
             object-fit: contain;
             
-            /* 核心旋轉動畫設定 */
             animation: slow-rotate 25s linear infinite; 
             
-            /* 加上一層柔和的霓虹發光或陰影（可選，若不需要可刪除此行） */
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); 
         }
 
-        /* 定義旋轉動畫：從 0 度轉到 360 度 */
         @keyframes slow-rotate {
             from {
                 transform: rotate(0deg);
@@ -162,9 +156,7 @@
             transform: translateX(5px);
         }
 
-        /* ==========================================
-           【遊戲頁面樣式】
-           ========================================== */
+
         .game-container {
             display: none; 
             width: 100%;
@@ -174,7 +166,6 @@
             box-sizing: border-box;
         }
 
-        /* 0度起點標題：配合主調的優雅白色文字，置於方格正上方外側 */
         .game-outer-label-top {
             text-align: center;
             color: grey;
@@ -185,58 +176,52 @@
             flex-shrink: 0;
         }
 
-        /* 2.png 的上半圓大白卡片 */
         .game-main-card {
             background: var(--card-bg);
             border-radius: 40px 40px 40px 40px; 
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 0; /* 移除原本的 padding，改由內層子元件控制，以利精準分配比例 */
+            padding: 0; 
             box-sizing: border-box;
             overflow: hidden; 
             box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
             position: relative; 
         }
 
-        /* 【修改】白色上半部區塊：固定佔 65% 高度，並確保內部元素不會溢出 */
         .white-section {
             height: 70%;
             display: flex;
             flex-direction: column;
-            padding: 10px 10px 10px 10px; /* 【修正】右邊加大 padding (75px) 幫懸浮按鈕留出專屬空間，防止內容重疊 */
+            padding: 10px 10px 10px 10px; 
             box-sizing: border-box;
             position: relative; 
             overflow: hidden;
         }
 
-        /* 【修改】關係鎖鏈垂直鏈接區：強制徹底緊貼，絕不溢出 */
         .vertical-path-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1px; /* 【修正】極小化基礎間距 */
+            gap: 1px; 
             margin: 0;
             padding: 0;
             flex: 1; 
-            justify-content: space-between; /* 均勻分配垂直空間 */
-            overflow: hidden; /* 徹底禁止滾動條 */
+            justify-content: space-between; 
+            overflow: hidden; 
             width: 100%;
-            height: 100%; /* 強制填滿父層白色區塊 */
+            height: 100%; 
         }
 
-        /* 【修改】答題方格樣式：全面啟用高度與字型動態縮放 */
         .node-box {
             width: 100%; 
             max-width: 180px; 
             background-color: var(--primary-purple);
             color: white;
-            /* 【修正】內邊距改用 vh 動態計算，高度不夠時自動變薄（最小 3px，最大 8px） */
             padding: clamp(2px, 0.4vh, 8px) 10px; 
             border-radius: 12px;
             text-align: center;
             font-weight: bold;
-            /* 【修正】核心邏輯：字型大小隨螢幕高度變動！最小 0.7rem，最大 0.95rem */
             font-size: clamp(0.6rem, 1.8vh, 1rem); 
             box-shadow: 0 3px 8px rgba(121, 134, 203, 0.3);
             cursor: pointer;
@@ -244,9 +229,8 @@
             border: 1px solid transparent;
             word-break: break-all;
             
-            /* 【修正】強大彈性縮放：最大高度隨螢幕高度動態增減，徹底防爆 */
             flex: 1; 
-            min-height: 0; /* 允許 flex 子元件縮小到比內容還小，防止撐開 */
+            min-height: 0;
             max-height: clamp(30px, 7.5vh, 50px); 
             
             display: flex;
@@ -259,7 +243,6 @@
             transform: scale(1.03);
         }
 
-        /* 起點與終點節點在鏈結中的特別樣式 */
         .node-box.start-node {
             background-color: #6573c3;
         }
@@ -268,7 +251,6 @@
             box-shadow: 0 3px 8px rgba(229, 115, 115, 0.3);
         }
 
-        /* 【修改】尚未解鎖的空方格：強制維持與普通方格完全一致的尺寸與縮放彈性 */
         .node-box.empty {
             background-color: transparent;
             border: 2px solid #cbd5e1;
@@ -276,16 +258,15 @@
             cursor: default;
             box-shadow: none;
             font-weight: normal;
-            font-size: clamp(0.7rem, 2.2vh, 0.95rem); /* 保持與普通方格相同的動態字級大小範圍 */
+            font-size: clamp(0.7rem, 2.2vh, 0.95rem);
             
-            /* 【修正】內邊距、高度限制與彈性完全同步，確保視覺大小 100% 一致 */
             padding: clamp(4px, 0.8vh, 8px) 10px; 
             flex: 1; 
             min-height: 34px; 
             max-height: clamp(34px, 6.5vh, 52px); 
             box-sizing: border-box;
         }
-        /* 【修改】角色備註小字：隨方格高度同步極小化，防止擠開空間 */
+
         .node-box .sub-remark {
             font-size: clamp(0.3rem, 1.1vh, 0.7rem) !important;
             line-height: 1;
@@ -298,17 +279,16 @@
             display: block;
         }
 
-        /* 【修改】箭頭尺寸也隨螢幕高度等比例縮小 */
+
         .node-arrow {
             color: #cbd5e1;
-            font-size: clamp(0.5rem, 1.5vh, 0.8rem); /* 【修正】高度矮時箭頭變小 */
+            font-size: clamp(0.5rem, 1.5vh, 0.8rem); 
             line-height: 1;
             margin: 0;
             padding: 0;
             flex-shrink: 0;
         }
 
-        /* 6度終點標題：配合主調，置於白方格正下方外側 */
         .game-outer-label-bottom {
             text-align: center;
             color: grey;
@@ -320,22 +300,17 @@
             flex-shrink: 0;
         }
 
-        /* ==========================================
-           【懸浮功能按鈕群】精準固定在白色區塊的右下角
-           ========================================== */
         .floating-actions {
             position: absolute;
             right: 12px;
             bottom: 15px; 
             display: flex;
             flex-direction: column;
-            gap: 1.5vh; /* 【修改】按鈕之間的間距隨螢幕高度動態調整 */
+            gap: 1.5vh; 
             z-index: 10;
         }
 
-        /* 圓形按鈕優化排版，確保隨瀏覽器大小動態縮小 */
         .circle-btn {
-            /* 【修改】使用 clamp 讓按鈕寬高在 38px 到 52px 之間隨螢幕寬度(vw)或高度(vh)動態縮放 */
             width: clamp(38px, 11vw, 52px);
             height: clamp(38px, 11vw, 52px);
             border-radius: 50%;
@@ -349,7 +324,6 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.25);
             transition: all 0.2s ease;
-            /* 【修改】字體大小也隨按鈕同步縮放，確保文字不會溢出 */
             font-size: clamp(0.5rem, 2.2vw, 0.65rem); 
             font-weight: bold;
             padding: 4px;
@@ -364,7 +338,6 @@
             background-color: #1a427a;
         }
 
-        /* 【修改】裡面的 SVG 圖標大小也必須跟著按鈕一起縮放 */
         .circle-btn svg {
             width: clamp(12px, 3.5vw, 16px);
             height: clamp(12px, 3.5vw, 16px);
@@ -373,7 +346,6 @@
             flex-shrink: 0;
         }
 
-        /* 提示文字盒 */
         .game-hint-box {
             background: #fff8e1;
             border-left: 4px solid var(--warning-color);
@@ -392,9 +364,6 @@
             z-index: 15;
         }
 
-        /* ==========================================
-           【下方角色選擇區】固定佔 40% 高度
-           ========================================== */
         .selection-panel {
             background-color: #5582be; 
             height: 30%;
@@ -475,9 +444,6 @@
             opacity: 0.9;
         }
 
-        /* ==========================================
-           【彈窗與答案揭曉樣式】
-           ========================================== */
         .success-overlay {
             display: none;
             position: fixed;
@@ -519,22 +485,21 @@
             margin-bottom: 12px;
         }
 
-        /* 【新增】專屬按鈕群容器：用 gap 強制所有按鈕不論怎麼顯示，間距一律完全平均 */
+
         .success-btn-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;          /* 您可以自由調整這個數值，控制按鈕與按鈕之間的固定高度間距 */
-            margin-top: 20px;   /* 讓按鏈群與上方的關係鎖鏈文字保持舒適的距離 */
+            gap: 12px;          
+            margin-top: 20px;   
             width: 100%;
         }
 
-        /* 【修改】優化單個按鈕樣式 */
+
         .btn-action {
             padding: 12px 20px;
             font-size: 0.95rem;
             border-radius: 50px;
             cursor: pointer;
-            /* margin: 6px 0;  <-- 【請把這行移除或註冊掉】，改由外層的 gap 來控制才不會衝突 */
             border: none;
             font-weight: bold;
             width: 100%;
@@ -646,7 +611,7 @@
 
 <div class="success-overlay" id="successOverlay">
     <div class="success-card">
-        <div class="success-title" id="overlayTitle">🎉 連結成功！</div>
+        <div class="success-title" id="overlayTitle">連結成功！</div>
         <div class="success-scroll-area">
             <p id="successDetails" style="line-height: 1.5; margin-bottom: 15px; font-size: 0.9rem; color: #4b5563; text-align: left;"></p>
             
@@ -662,22 +627,19 @@
 </div>
 
 <script>
-    // ==========================================
-    // Google Sheets API 資訊
-    // ==========================================
     const SPREADSHEET_ID = '1srN4k7xMuGOZFz1JgsuFRfFvRQeXcBCiAcAjPnk1_JI'; 
     const API_KEY = 'AIzaSyASvYZevWiECOAXp8ab9S4Xd1V97Kpw714';
 
     let characterList = []; 
     let remarksMap = {};    
     let matrixData = {};    
-    let hintTimeout = null; // 【新增】用來記錄提示方格的定時器
+    let hintTimeout = null; 
     
     let gameState = {
         startChar: '',
         endChar: '',
         currentPath: [], 
-        maxSteps: 6      // 最多 5 個中間人
+        maxSteps: 6      
     };
 
     async function loadDataFromSheets() {
@@ -844,7 +806,6 @@
             return;
         }
 
-        // --- 動態渲染中央關係鏈 ---
         const pathContainer = document.getElementById('verticalPathContainer');
         let pathHtml = '';
 
@@ -887,7 +848,6 @@
 
         pathContainer.innerHTML = pathHtml;
 
-        // --- 下方角色選擇區更新 ---
         const titleEl = document.getElementById('selectionTitle');
         const gridEl = document.getElementById('optionsGrid');
         
@@ -933,7 +893,6 @@
         if (index >= gameState.currentPath.length) return;
         gameState.currentPath = gameState.currentPath.slice(0, index + 1);
         
-        // 【優化】回溯時如果提示還在倒數，立刻清除並隱藏
         if (hintTimeout) {
             clearTimeout(hintTimeout);
             hintTimeout = null;
@@ -948,7 +907,6 @@
             const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
             const remainingSteps = gameState.maxSteps - (gameState.currentPath.length - 1);
     
-            // 【新增】如果之前已經有在倒數的定時器，先清除它，重新計算 5 秒
             if (hintTimeout) {
                 clearTimeout(hintTimeout);
             }
@@ -970,10 +928,9 @@
                 hintBox.style.display = 'block';
             }
     
-            // 【新增】設定 5000 毫秒（5秒）後將方格收起來
             hintTimeout = setTimeout(() => {
                 hintBox.style.display = 'none';
-                hintTimeout = null; // 隱藏後清空紀錄
+                hintTimeout = null; 
             }, 5000);
         }
 
@@ -1017,7 +974,7 @@
 
     function showSuccessPopup() {
         const steps = gameState.currentPath.length - 2; 
-        const pathString = gameState.currentPath.join(' ➔ '); // 【新增】將陣列轉為以 ➔ 連結的字串
+        const pathString = gameState.currentPath.join(' ➔ '); 
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
@@ -1025,8 +982,7 @@
         
         titleEl.innerText = "連結成功！";
         
-        // 【修改】將過關訊息內容改為您指定的格式，並使用 <br> 來達成網頁上的換行
-        detailsEl.innerHTML = `恭喜你成功使用 ${steps} 個連接角色過關！<br><br>⛓️ 關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
+        detailsEl.innerHTML = `恭喜你成功使用 ${steps} 個連接角色過關！<br><br>⛓️關係鎖鏈：<br><strong style="color:var(--primary-purple);">${pathString}</strong>`;
         
         document.getElementById('otherAnswersContainer').style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'block'; 
@@ -1046,7 +1002,7 @@
         const allPaths = findAllShortestPaths(gameState.startChar, gameState.endChar);
         
         let html = `<div style="border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; text-align:left;">
-                    <span style="font-size:0.8rem; font-weight:bold; color:#7986cb;">💡 本題其餘最佳解法：</span>`;
+                    <span style="font-size:0.8rem; font-weight:bold; color:#7986cb;">本題其餘最佳解法：</span>`;
         
         allPaths.forEach((path, idx) => {
             html += `
@@ -1070,7 +1026,7 @@
     function copyResultToClipboard() {
         const steps = gameState.currentPath.length - 2;
         const pathString = gameState.currentPath.join(' ➔ ');
-        const shareText = `🪐失眠藥廣播劇之六度圈與Game🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩成功使用 ${steps} 個連接角色過關！\n\n⛓️ 關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥廣播劇宇宙的熟悉度吧！\n遊戲連結：https://mcu-6degrees-game.vercel.app/`;
+        const shareText = `🪐失眠藥廣播劇之六度圈與Game🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩成功使用 ${steps} 個連接角色過關！\n\n⛓️關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥廣播劇宇宙的熟悉度吧！\n遊戲連結：https://mcu-6degrees-game.vercel.app/`;
         
         navigator.clipboard.writeText(shareText).then(() => {
             alert('複製成功！快去分享給其他鎮民吧！');
