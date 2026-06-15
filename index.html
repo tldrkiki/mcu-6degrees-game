@@ -12,7 +12,7 @@
     <meta property="og:image" content="https://github.com/kikiwoo702/mcu-6degrees-game/blob/main/6degrees-game.png?raw=true" />
     <meta property="og:url" content="https://mcu-6degrees-game.vercel.app/" />
     <title>失眠藥廣播劇之六度圈與Game</title>
-    <link href="https://fonts.googleapis.com/css?family=Noto Sans TC" rel="stylesheet">
+    <link href="hhttps://fonts.googleapis.com/css?family=Noto Sans TC" rel="stylesheet">
     <style>
         :root {
             --primary-purple: #7986cb;   
@@ -36,7 +36,7 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            overflow: hidden;
+            overflow: hidden; 
             box-sizing: border-box;
         }
 
@@ -96,6 +96,7 @@
             letter-spacing: 1px;
         }
         
+
         .rotating-logo-container {
             display: flex;
             justify-content: center;
@@ -107,13 +108,19 @@
             width: clamp(120px, 50vw, 250px);
             height: clamp(120px, 50vw, 250px);
             object-fit: contain;
+            
             animation: slow-rotate 25s linear infinite; 
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+            
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); 
         }
 
         @keyframes slow-rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .btn-start-game {
@@ -149,8 +156,9 @@
             transform: translateX(5px);
         }
 
+
         .game-container {
-            display: none;
+            display: none; 
             width: 100%;
             max-width: 480px;
             height: 100%;
@@ -176,7 +184,7 @@
             flex-direction: column;
             padding: 0; 
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: hidden; 
             box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
             position: relative; 
         }
@@ -202,11 +210,11 @@
             justify-content: space-between; 
             overflow: hidden; 
             width: 100%;
-            height: 100%;
+            height: 100%; 
         }
 
         .node-box {
-            width: 100%;
+            width: 100%; 
             max-width: 180px; 
             background-color: var(--primary-purple);
             color: white;
@@ -220,17 +228,24 @@
             transition: transform 0.2s, font-size 0.2s;
             border: 1px solid transparent;
             word-break: break-all;
+            
             flex: 1; 
             min-height: 0;
             max-height: clamp(30px, 7.5vh, 50px); 
+            
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        .node-box:hover { transform: scale(1.03); }
-        .node-box.start-node { background-color: #6573c3; }
+        .node-box:hover {
+            transform: scale(1.03);
+        }
+
+        .node-box.start-node {
+            background-color: #6573c3;
+        }
         .node-box.end-node {
             background-color: #e57373;
             box-shadow: 0 3px 8px rgba(229, 115, 115, 0.3);
@@ -244,6 +259,7 @@
             box-shadow: none;
             font-weight: normal;
             font-size: clamp(0.7rem, 2.2vh, 0.95rem);
+            
             padding: clamp(4px, 0.8vh, 8px) 10px; 
             flex: 1; 
             min-height: 34px; 
@@ -262,6 +278,7 @@
             max-width: 95%;
             display: block;
         }
+
 
         .node-arrow {
             color: #cbd5e1;
@@ -313,7 +330,7 @@
             text-align: center;
             line-height: 1.1;
             box-sizing: border-box;
-            flex-shrink: 0;
+            flex-shrink: 0; /* 防止按鈕被外層擠壓變形 */
         }
 
         .circle-btn:hover {
@@ -348,7 +365,7 @@
         }
 
         .selection-panel {
-            background-color: #5582be;
+            background-color: #5582be; 
             height: 30%;
             padding: 15px 20px 0px 20px;
             display: flex;
@@ -358,93 +375,12 @@
             border-radius: 0px 0px 40px 40px;
         }
 
-        .selection-header-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-shrink: 0;
-        }
-
         .selection-title {
             color: white;
             font-size: 0.9rem;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .btn-definition-help {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-            box-sizing: border-box;
-        }
-        
-        .btn-definition-help:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .definition-popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(2px);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .definition-popup-card {
-            background: white;
-            padding: 20px;
-            border-radius: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            max-width: 320px;
-            width: 100%;
-            box-sizing: border-box;
-            color: var(--text-dark);
-            text-align: left;
-        }
-
-        .definition-popup-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #113160;
             margin-bottom: 10px;
-            border-bottom: 2px solid #e0e4f5;
-            padding-bottom: 6px;
-        }
-
-        .definition-popup-content {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #4b5563;
-        }
-
-        .definition-popup-btn {
-            background: var(--primary-purple);
-            color: white;
-            border: none;
-            padding: 8px 0;
-            width: 100%;
-            border-radius: 20px;
-            margin-top: 15px;
             font-weight: bold;
-            cursor: pointer;
-            font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
         .options-scroll-area {
@@ -453,7 +389,9 @@
             padding-right: 4px;
         }
 
-        .options-scroll-area::-webkit-scrollbar { width: 5px; }
+        .options-scroll-area::-webkit-scrollbar {
+            width: 5px;
+        }
         .options-scroll-area::-webkit-scrollbar-thumb {
             background: rgba(255,255,255,0.3);
             border-radius: 10px;
@@ -547,6 +485,7 @@
             margin-bottom: 12px;
         }
 
+
         .success-btn-group {
             display: flex;
             flex-direction: column;
@@ -554,6 +493,7 @@
             margin-top: 20px;   
             width: 100%;
         }
+
 
         .btn-action {
             padding: 12px 20px;
@@ -660,25 +600,12 @@
             </div>
 
             <div class="selection-panel">
-                <div class="selection-header-wrapper">
-                    <div class="selection-title" id="selectionTitle">請選擇下一位連結角色：</div>
-                    <button class="btn-definition-help" onclick="toggleDefinitionPopup(event)">?</button>
-                </div>
+                <div class="selection-title" id="selectionTitle">請選擇下一位連結角色：</div>
                 <div class="options-scroll-area">
                     <div class="options-grid" id="optionsGrid"></div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="definition-popup-overlay" id="definitionPopup" onclick="toggleDefinitionPopup(event)">
-    <div class="definition-popup-card" onclick="event.stopPropagation()">
-        <div class="definition-popup-title">「認識」定義</div>
-        <div class="definition-popup-content">
-            同一集內或對話間顯示雙方實際有交流過，或者雙方屬於同一群體（例如：同事、同校師生）。<br><br>不包括粉絲與名人、作者與讀者之關係。
-        </div>
-        <button class="definition-popup-btn" onclick="toggleDefinitionPopup(event)">確 定</button>
     </div>
 </div>
 
@@ -707,7 +634,7 @@
     let remarksMap = {};    
     let matrixData = {};    
     let hintTimeout = null; 
-   
+    
     let gameState = {
         startChar: '',
         endChar: '',
@@ -715,21 +642,12 @@
         maxSteps: 6      
     };
 
-    function toggleDefinitionPopup(event) {
-        if (event) event.stopPropagation();
-        const popup = document.getElementById('definitionPopup');
-        if (popup.style.display === 'flex') {
-            popup.style.display = 'none';
-        } else {
-            popup.style.display = 'flex';
-        }
-    }
-
     async function loadDataFromSheets() {
         try {
             const remarksUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Character remarks?key=${API_KEY}`;
             const remarksRes = await fetch(remarksUrl);
             const remarksJson = await remarksRes.json();
+            
             if(remarksJson.values) {
                 remarksJson.values.forEach((row, index) => {
                     if (index === 0) return; 
@@ -744,17 +662,20 @@
             const matrixJson = await matrixRes.json();
 
             if (!matrixJson.values || matrixJson.values.length === 0) throw new Error("無法讀取矩陣資料");
+
             const rows = matrixJson.values;
             const headerRow = rows[0]; 
             
             characterList = headerRow.slice(1).map(name => name.trim());
             characterList.forEach(char => { matrixData[char] = []; });
+
             for (let colIndex = 1; colIndex < headerRow.length; colIndex++) {
                 const columnChar = headerRow[colIndex].trim();
                 for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
                     const rowCells = rows[rowIndex];
                     const rowChar = rowCells[0] ? rowCells[0].trim() : null;
                     const cellValue = rowCells[colIndex];
+
                     if (rowChar && cellValue && cellValue.toLowerCase() === 'v') {
                         if (matrixData[columnChar]) {
                             matrixData[columnChar].push(rowChar);
@@ -768,6 +689,7 @@
                     remarksMap[char] = "";
                 }
             });
+
             document.getElementById('loadingView').style.display = 'none';
             document.getElementById('coverView').style.display = 'flex';
 
@@ -801,20 +723,24 @@
         let validQuestionFound = false;
         let attempts = 0;
         let validPaths = [];
+
         while (!validQuestionFound && attempts < 500) {
             attempts++;
             rand1 = Math.floor(Math.random() * characterList.length);
             rand2 = Math.floor(Math.random() * characterList.length);
+            
             while (rand1 === rand2) {
                 rand2 = Math.floor(Math.random() * characterList.length);
             }
 
             let tempStart = characterList[rand1];
             let tempEnd = characterList[rand2];
+            
             const startNeighbors = matrixData[tempStart] || [];
             if (startNeighbors.includes(tempEnd)) continue; 
             
             validPaths = findAllShortestPaths(tempStart, tempEnd);
+            
             if (validPaths.length > 0 && validPaths[0].length - 1 > 1 && (validPaths[0].length - 1) <= gameState.maxSteps) {
                 validQuestionFound = true;
                 gameState.startChar = tempStart;
@@ -842,18 +768,20 @@
         let minLength = Infinity;
         let visitedLengths = {}; 
         visitedLengths[start] = 1;
+
         while (queue.length > 0) {
             let currentPath = queue.shift();
             let lastNode = currentPath[currentPath.length - 1];
 
             if ((currentPath.length - 1) > gameState.maxSteps) break;
             if (currentPath.length > minLength) break;
+
             if (lastNode === end) {
                 if (currentPath.length < minLength) {
                     minLength = currentPath.length;
                     shortestPaths = [currentPath];
                 } else if (currentPath.length === minLength) {
-                    shortestPaths.push(shortestPaths);
+                    shortestPaths.push(currentPath);
                 }
                 continue;
             }
@@ -880,6 +808,7 @@
 
         const pathContainer = document.getElementById('verticalPathContainer');
         let pathHtml = '';
+
         const startRemark = remarksMap[gameState.startChar] ? `<span class="sub-remark" style="color: #e0e4f5; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.startChar]}</span>` : '';
         pathHtml += `
             <div id="startLabelOuter" class="game-outer-label-top">0度起點</div>
@@ -908,8 +837,7 @@
             pathHtml += `<div class="node-arrow">↓</div>`;
         }
 
-        const endRemark = remarksMap[gameState.endChar] ?
-        `<span class="sub-remark" style="color: #ffcdd2; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.endChar]}</span>` : '';
+        const endRemark = remarksMap[gameState.endChar] ? `<span class="sub-remark" style="color: #ffcdd2; font-size: 0.6rem; margin-top: 2px; font-weight: normal;">${remarksMap[gameState.endChar]}</span>` : '';
         pathHtml += `
             <div class="node-box end-node" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <span>${gameState.endChar}</span>
@@ -917,6 +845,7 @@
             </div>
             <div id="endLabelOuter" class="game-outer-label-bottom">6度終點</div>
         `;
+
         pathContainer.innerHTML = pathHtml;
 
         const titleEl = document.getElementById('selectionTitle');
@@ -925,6 +854,7 @@
         titleEl.innerText = `請選擇「${currentCharacter}」認識的角色`;
 
         const acquaintances = matrixData[currentCharacter] || [];
+
         if (connectionsCount >= gameState.maxSteps - 1) {
             if (!acquaintances.includes(gameState.endChar)) {
                 gridEl.innerHTML = `
@@ -937,7 +867,7 @@
         }
 
         if (acquaintances.length === 0) {
-            gridEl.innerHTML = `<div class="empty-notice">此角色在當前宇宙中無向下延展的關係，請點選上方已選方格後退重選</div>`;
+            gridEl.innerHTML = `<div class="empty-notice">此角色在當前宇宙中無向下延展的關係，請點選上方鎖鏈回溯。</div>`;
         } else {
             let gridHtml = '';
             acquaintances.forEach(name => {
@@ -962,6 +892,7 @@
         if (index === 0 && gameState.currentPath.length === 1) return;
         if (index >= gameState.currentPath.length) return;
         gameState.currentPath = gameState.currentPath.slice(0, index + 1);
+        
         if (hintTimeout) {
             clearTimeout(hintTimeout);
             hintTimeout = null;
@@ -975,6 +906,7 @@
             const hintBox = document.getElementById('hintDisplayBox');
             const currentCharacter = gameState.currentPath[gameState.currentPath.length - 1];
             const remainingSteps = gameState.maxSteps - (gameState.currentPath.length - 1);
+    
             if (hintTimeout) {
                 clearTimeout(hintTimeout);
             }
@@ -1000,7 +932,7 @@
                 hintBox.style.display = 'none';
                 hintTimeout = null; 
             }, 5000);
-    }
+        }
 
     function showAnswersView() {
         const paths = findAllShortestPaths(gameState.startChar, gameState.endChar);
@@ -1009,10 +941,12 @@
         const detailsEl = document.getElementById('successDetails');
         const btnShowOthers = document.getElementById('btnShowOthers');
         const btnShareResult = document.getElementById('btnShareResult');
+
         titleEl.innerText = "正確答案揭曉";
         btnShowOthers.style.display = 'none';
         if (btnShareResult) btnShareResult.style.display = 'none';
         container.style.display = 'block';
+
         if (paths.length === 0) {
             detailsEl.innerHTML = `從「${gameState.startChar}」到「${gameState.endChar}」在 6 度限制內無通路。`;
             container.innerHTML = '';
@@ -1039,7 +973,7 @@
     }
 
     function showSuccessPopup() {
-        const steps = gameState.currentPath.length - 2;
+        const steps = gameState.currentPath.length - 2; 
         const pathString = gameState.currentPath.join(' ➔ '); 
         const titleEl = document.getElementById('overlayTitle');
         const detailsEl = document.getElementById('successDetails');
@@ -1069,6 +1003,7 @@
         
         let html = `<div style="border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; text-align:left;">
                     <span style="font-size:0.8rem; font-weight:bold; color:#7986cb;">本題其餘最佳解法：</span>`;
+        
         allPaths.forEach((path, idx) => {
             html += `
                 <div class="answer-block">
@@ -1092,6 +1027,7 @@
         const steps = gameState.currentPath.length - 2;
         const pathString = gameState.currentPath.join(' ➔ ');
         const shareText = `🪐失眠藥廣播劇之六度圈與Game🌙\n\n起點：${gameState.startChar}\n終點：${gameState.endChar}\n🧩成功使用 ${steps} 個中間人過關！\n\n⛓️關係鎖鏈：\n${pathString}\n\n快來挑戰你對失眠藥廣播劇宇宙的熟悉度吧！\n遊戲連結：https://mcu-6degrees-game.vercel.app/`;
+        
         navigator.clipboard.writeText(shareText).then(() => {
             alert('複製成功！快去分享給其他鎮民吧！');
         }).catch(() => {
