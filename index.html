@@ -375,12 +375,95 @@
             border-radius: 0px 0px 40px 40px;
         }
 
+.selection-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
         .selection-title {
             color: white;
             font-size: 0.9rem;
-            margin-bottom: 10px;
             font-weight: bold;
-            flex-shrink: 0;
+            margin: 0;
+        }
+
+        /* 認識定義問號按鈕樣式 */
+        .btn-definition-help {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .btn-definition-help:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* 認識定義自訂彈窗樣式 */
+        .definition-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .definition-popup-card {
+            background: white;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            max-width: 320px;
+            width: 100%;
+            box-sizing: border-box;
+            color: var(--text-dark);
+            text-align: left;
+        }
+
+        .definition-popup-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #113160;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e0e4f5;
+            padding-bottom: 6px;
+        }
+
+        .definition-popup-content {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #4b5563;
+        }
+
+        .definition-popup-btn {
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            padding: 8px 0;
+            width: 100%;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
         }
 
         .options-scroll-area {
@@ -600,12 +683,25 @@
             </div>
 
             <div class="selection-panel">
-                <div class="selection-title" id="selectionTitle">請選擇下一位連結角色：</div>
+                <div class="selection-header-wrapper">
+                    <div class="selection-title" id="selectionTitle">請選擇下一位連結角色：</div>
+                    <button class="btn-definition-help" onclick="toggleDefinitionPopup(event)">?</button>
+                </div>
                 <div class="options-scroll-area">
                     <div class="options-grid" id="optionsGrid"></div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="definition-popup-overlay" id="definitionPopup" onclick="toggleDefinitionPopup(event)">
+    <div class="definition-popup-card" onclick="event.stopPropagation()">
+        <div class="definition-popup-title">「認識」定義</div>
+        <div class="definition-popup-content">
+            同一集內或對話間顯示雙方實際有交流過，或者雙方屬於同一群體（例如：同事、同校師生）。不包括粉絲與名人、作者與讀者之關係。
+        </div>
+        <button class="definition-popup-btn" onclick="toggleDefinitionPopup(event)">確 定</button>
     </div>
 </div>
 
@@ -641,6 +737,16 @@
         currentPath: [], 
         maxSteps: 6      
     };
+
+    function toggleDefinitionPopup(event) {
+        if (event) event.stopPropagation();
+        const popup = document.getElementById('definitionPopup');
+        if (popup.style.display === 'flex') {
+            popup.style.display = 'none';
+        } else {
+            popup.style.display = 'flex';
+        }
+    }
 
     async function loadDataFromSheets() {
         try {
